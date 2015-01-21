@@ -8,7 +8,8 @@ performs a GET, a POST, and a PUT
 
 Libraries
 =========
-*  [Volley](http://android.googlesource.com/platform/frameworks/volley) Network Request
+
 *  [ButterKnife](https://github.com/JakeWharton/butterknife) View Injection
 *  [Gson](https://code.google.com/p/google-gson/) Java library to serialize and deserialize Java objects to (and from) JSON.
 *  [RetroFit](http://square.github.io/retrofit/) Type-safe REST client
+*  [okhttp](http://square.github.io/okhttp/) An HTTP & SPDY client
