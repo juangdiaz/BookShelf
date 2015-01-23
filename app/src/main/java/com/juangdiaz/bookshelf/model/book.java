@@ -1,12 +1,15 @@
 package com.juangdiaz.bookshelf.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by juangdiaz on 1/13/15.
  */
-public class Book  {
+public class Book implements Parcelable {
 
-    public Book(){}
+    public Book() {
+    }
 
     private int id;
     private String author;
@@ -81,5 +84,44 @@ public class Book  {
         this.url = url;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(author);
+        dest.writeString(categories);
+        dest.writeString(lastCheckedOut);
+        dest.writeString(lastCheckedOutBy);
+        dest.writeString(publisher);
+        dest.writeString(title);
+        dest.writeString(url);
+
+    }
+
+
+    public static final Parcelable.Creator<Book> CREATOR
+            = new Parcelable.Creator<Book>() {
+        public Book createFromParcel(Parcel in) {
+            return new Book(in);
+        }
+
+        public Book[] newArray(int size) {
+            return new Book[size];
+        }
+    };
+
+    private Book(Parcel in) {
+        id = in.readInt();
+        author = in.readString();
+        categories = in.readString();
+        lastCheckedOut = in.readString();
+        lastCheckedOutBy = in.readString();
+        publisher = in.readString();
+        title = in.readString();
+        url = in.readString();
+    }
 }

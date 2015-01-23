@@ -1,16 +1,20 @@
 package com.juangdiaz.bookshelf.activities;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+
 import com.juangdiaz.bookshelf.R;
+import com.juangdiaz.bookshelf.fragments.BookDetailFragment;
 import com.juangdiaz.bookshelf.fragments.BookListFragment;
+import com.juangdiaz.bookshelf.model.Book;
 
 
-public class BookListActivity extends ActionBarActivity {
+public class BookListActivity extends ActionBarActivity implements BookListFragment.Callbacks {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -32,7 +36,7 @@ public class BookListActivity extends ActionBarActivity {
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setIcon(R.drawable.ic_launcher);
 
-             if (findViewById(R.id.item_detail_container) != null) {
+             if (findViewById(R.id.book_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-large and
             // res/values-sw600dp). If this view is present, then the
@@ -42,8 +46,39 @@ public class BookListActivity extends ActionBarActivity {
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
             ((BookListFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.item_list))
+                    .findFragmentById(R.id.book_list))
                     .setActivateOnItemClick(true);
+        }
+
+    }
+
+
+
+//TODO: do this next
+    /**
+     * Callback method from {@link com.juangdiaz.bookshelf.fragments.BookListFragment.Callbacks}
+     * indicating that the item with the given ID was selected.
+     */
+    @Override
+    public void onItemSelected(Book selectedItem) {
+        if (mTwoPane) {
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction.
+            Bundle arguments = new Bundle();
+            arguments.putParcelable(BookDetailFragment.ARG_ITEM, selectedItem); // put selected item
+            BookDetailFragment fragment = new BookDetailFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.book_detail_container, fragment)
+                    .commit();
+
+        } else {
+            // In single-pane mode, simply start the detail activity
+            // for the selected item ID.
+            Intent detailIntent = new Intent(this, BookDetailFragment.class);
+            detailIntent.putExtra(BookDetailFragment.ARG_ITEM, selectedItem);
+            startActivity(detailIntent);
         }
 
     }
@@ -71,4 +106,5 @@ public class BookListActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    
 }

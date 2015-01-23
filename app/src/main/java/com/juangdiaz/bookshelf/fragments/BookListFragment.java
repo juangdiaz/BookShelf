@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -28,10 +29,17 @@ import retrofit.client.Response;
 public class BookListFragment extends Fragment implements
         AbsListView.OnScrollListener, AbsListView.OnItemClickListener {
 
+    ListView mListView;
+    @InjectView(R.id.list_view)
+
 
     ListView bookList;
     ListAdapter mListAdapter;
     private List<Book> streamBookData = new ArrayList<>();
+
+    // The fragment's current callback object, which is notified of list item clicks.
+
+    private Callbacks mCallbacks = sDummyCallbacks; 
 
     private OnFragmentInteractionListener mListener;
 
@@ -61,6 +69,8 @@ public class BookListFragment extends Fragment implements
         if (mListAdapter == null) {
             mListAdapter = new ListAdapter(getActivity(), 0,streamBookData);
         }
+
+
         downloadData();
 
     }
@@ -94,8 +104,8 @@ public class BookListFragment extends Fragment implements
         mListAdapter = new ListAdapter(getActivity(),0,streamBookData);
         bookList.setAdapter(mListAdapter);
 
+        bookList.setOnItemClickListener(this);
         //mListView.setOnScrollListener(this);
-        //mListView.setOnItemClickListener(this);
 
     }
     
@@ -130,7 +140,7 @@ public class BookListFragment extends Fragment implements
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        
+        int po = position;
     }
 
     @Override
@@ -142,6 +152,37 @@ public class BookListFragment extends Fragment implements
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
     }
+
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callbacks {
+        /**
+         * Callback for when an item has been selected.
+         */
+        public void onItemSelected(Book selectedItem);
+    }
+
+    /**
+     * A dummy implementation of the {@link Callbacks} interface that does
+     * nothing. Used only when this fragment is not attached to an activity.
+     */
+    private static Callbacks sDummyCallbacks = new Callbacks() {
+        @Override
+        public void onItemSelected(Book selectedItem) {
+        }
+    };
+    
+    
+    
+    
+    
+    
+    
+    
 
     /**
      * This interface must be implemented by activities that contain this

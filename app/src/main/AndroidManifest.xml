@@ -22,7 +22,11 @@
 
         <activity
             android:name=".activities.BookDetailActivity"
-            android:label="@string/title_activity_book_detail" >
+            android:label="@string/title_activity_book_detail"
+            android:parentActivityName=".activities.BookDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.BookDetailActivity"/>
         </activity>
     </application>
 
