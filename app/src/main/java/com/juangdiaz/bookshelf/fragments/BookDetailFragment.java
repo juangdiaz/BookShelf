@@ -30,6 +30,8 @@ public class BookDetailFragment extends Fragment {
 
     private Book mBook; // the selected item
 
+
+
     @InjectView(R.id.book_detail_title)
     TextView bookDetailTitle;
     
