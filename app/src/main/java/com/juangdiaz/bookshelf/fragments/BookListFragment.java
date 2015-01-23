@@ -41,7 +41,6 @@ public class BookListFragment extends Fragment implements
 
     private Callbacks mCallbacks = sDummyCallbacks; 
 
-    private OnFragmentInteractionListener mListener;
 
 
     public BookListFragment() {
@@ -114,33 +113,28 @@ public class BookListFragment extends Fragment implements
     
     
     
-    
-    
-    
-    
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-      //TODO:add code
+        // Activities containing this fragment must implement its callbacks.
+        if (!(activity instanceof Callbacks)) {
+            throw new IllegalStateException("Activity must implement fragment's callbacks.");
+        }
+
+        mCallbacks = (Callbacks) activity;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        // Reset the active callbacks interface to the dummy implementation.
+        mCallbacks = sDummyCallbacks;
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        int po = position;
+        mCallbacks.onItemSelected( mListAdapter.getItem(position));
     }
 
     @Override
