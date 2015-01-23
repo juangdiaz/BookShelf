@@ -76,7 +76,7 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
         } else {
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
-            Intent detailIntent = new Intent(this, BookDetailFragment.class);
+            Intent detailIntent = new Intent(this, BookDetailActivity.class);
             detailIntent.putExtra(BookDetailFragment.ARG_ITEM, selectedItem);
             startActivity(detailIntent);
         }
