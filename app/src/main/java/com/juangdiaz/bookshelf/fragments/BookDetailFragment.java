@@ -30,8 +30,23 @@ public class BookDetailFragment extends Fragment {
 
     private Book mBook; // the selected item
 
-    @InjectView(R.id.item_detail_title)
+    @InjectView(R.id.book_detail_title)
     TextView bookDetailTitle;
+    
+    @InjectView(R.id.book_detail_author)
+    TextView bookDetailAuthor;
+    
+    @InjectView(R.id.book_detail_publisher)
+    TextView bookDetailPublisher;
+    
+    @InjectView(R.id.book_detail_categories)
+    TextView bookDetailCategories;
+    
+    @InjectView(R.id.book_detail_lastcheckout)
+    TextView bookDetailLastCheckout;
+    
+    @InjectView(R.id.book_detail_lastcheckoutby)
+    TextView bookDetailLastCheckoutBy;
 
 
     public BookDetailFragment() {
@@ -59,6 +74,25 @@ public class BookDetailFragment extends Fragment {
                 ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(Html.fromHtml(mBook.getTitle()).toString()); // title in the action bar
                 bookDetailTitle.setText(Html.fromHtml(mBook.getTitle()).toString());
             }
+            if (!Strings.isNullOrEmpty(mBook.getAuthor())) {
+                bookDetailAuthor.setText(Html.fromHtml(mBook.getAuthor()).toString());
+            }
+            if (!Strings.isNullOrEmpty(mBook.getPublisher())) {
+                bookDetailPublisher.setText(Html.fromHtml("Publisher: " + mBook.getPublisher()).toString());
+            }
+            if (!Strings.isNullOrEmpty(mBook.getCategories())) {
+                bookDetailCategories.setText(Html.fromHtml("Tags: " + mBook.getCategories()).toString());
+            }
+            if (!Strings.isNullOrEmpty(mBook.getLastCheckedOut())) {
+                bookDetailLastCheckout.setText(Html.fromHtml("Last Checkout: " + mBook.getLastCheckedOut()).toString());
+            }
+            if (!Strings.isNullOrEmpty(mBook.getLastCheckedOutBy())) {
+                bookDetailLastCheckoutBy.setText(Html.fromHtml(mBook.getLastCheckedOutBy()).toString());
+            }
+            
+            
+            
+            
         }
 
         return rootView;

@@ -1,15 +1,55 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" 
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.juangdiaz.bookshelf.fragments.BookDetailFragment">
 
-    <TextView
-        android:id="@+id/item_detail_title"
-        style="@style/BookDetailText"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:textStyle="bold"
-        android:gravity="center_vertical"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/book_detail_title"
+        style="@style/BookDetailText"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Book name" />
+
+    <TextView
+        android:id="@+id/book_detail_author"
+        style="@style/BookDetailText"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Author" />
+
+    <TextView
+        android:id="@+id/book_detail_publisher"
+        style="@style/BookDetailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:id="@+id/book_detail_categories"
+        style="@style/BookDetailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tags" />
+
+    <TextView
+        android:id="@+id/book_detail_lastcheckout"
+        style="@style/BookDetailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last Checkout" />
+    
+    <TextView
+        android:id="@+id/book_detail_lastcheckoutby"
+        style="@style/BookDetailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         />
+
+
+
+</LinearLayout>
