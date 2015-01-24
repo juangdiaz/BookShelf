@@ -24,13 +24,14 @@ import butterknife.InjectView;
 public class BookDetailFragment extends Fragment {
 
 
-    public static final String ARG_ITEM = "selected_item";
+    public static final String ARG_ITEM = "selected_book_id";
 
     private static final String SAVED_LAST_TITLE = "last_title";
 
     private Book mBook; // the selected item
 
-
+    //do a call to book/id
+    private int bookID;
 
     @InjectView(R.id.book_detail_title)
     TextView bookDetailTitle;

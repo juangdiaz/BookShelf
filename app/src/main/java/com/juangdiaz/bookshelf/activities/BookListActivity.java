@@ -102,6 +102,8 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_add) {
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
