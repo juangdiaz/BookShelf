@@ -89,7 +89,7 @@ public class BookDetailActivity extends ActionBarActivity {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, mBook.getTitle());
-        //shareIntent.putExtra(Intent.EXTRA_TEXT, );
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Going to read this cool book" + mBook.getTitle());
 
 
 

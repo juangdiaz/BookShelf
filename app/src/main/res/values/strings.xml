@@ -11,9 +11,22 @@
     <!-- Book Detail -->
     <string name="book_detail_empty">No Data</string>
 
+    <string name="action_edit">Edit Book</string>
+    
+    
+    <!-- Book Edit -->
+
+    <string name="action_done">Done</string>
+    
+    
     <!-- Default -->
     <string name="default_empty_value">n/a</string>
     <string name="title_activity_book_edit">BookEditActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="book_title_edit">Book Title</string>
+    <string name="book_author_edit" >Author</string>
+    <string name="book_publisher_edit" >Publisher</string>
+    <string name="book_categories_edit" >Categories</string>
+    <string name="book_submit" >Submit</string>
 
 </resources>

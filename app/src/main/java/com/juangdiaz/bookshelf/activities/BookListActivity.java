@@ -103,7 +103,11 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_add) {
-            return true;
+
+            // In single-pane mode, simply start the detail activity
+            // for the selected item ID.
+            Intent createIntent = new Intent(this, BookEditActivity.class);
+            startActivity(createIntent);
         }
 
         return super.onOptionsItemSelected(item);
