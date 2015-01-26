@@ -13,22 +13,26 @@
     <EditText
         android:id="@+id/book_edit_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:hint="@string/book_title_edit" />
 
     <EditText
         android:id="@+id/book_edit_author"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:hint="@string/book_author_edit" />
     
     <EditText
         android:id="@+id/book_edit_publisher"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:hint="@string/book_publisher_edit" />
     
     <EditText
         android:id="@+id/book_edit_categories"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:hint="@string/book_categories_edit" />
     
     <Button
         android:layout_width="fill_parent"

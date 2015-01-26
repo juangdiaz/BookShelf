@@ -31,6 +31,7 @@ public class BookDetailActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
+        
         ButterKnife.inject(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Show the Up button in the action bar.
@@ -61,18 +62,11 @@ public class BookDetailActivity extends ActionBarActivity {
             NavUtils.navigateUpTo(this, new Intent(this, BookListActivity.class));
             return true;
         }else if (id == R.id.action_edit) {
-
-
-
-
                 // In single-pane mode, simply start the Edit activity
                 // for the selected book ID.
                 Intent editIntent = new Intent(this, BookEditActivity.class);
                 editIntent.putExtra(BookEditFragment.ARG_ITEM, mBook);
                 startActivity(editIntent);
-
-            
-            
 
         }
         return super.onOptionsItemSelected(item);
@@ -80,6 +74,7 @@ public class BookDetailActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        
         // Inflate menu resource file.
         getMenuInflater().inflate(R.menu.menu_book_detail, menu);
 
@@ -106,13 +101,10 @@ public class BookDetailActivity extends ActionBarActivity {
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, mBook.getTitle());
         shareIntent.putExtra(Intent.EXTRA_TEXT, "Going to read this cool book" + mBook.getTitle());
 
-
-
-
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(shareIntent);
         }
     }
-    
+
     
 }

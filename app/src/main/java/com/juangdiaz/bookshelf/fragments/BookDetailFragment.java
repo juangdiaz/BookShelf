@@ -1,7 +1,5 @@
 package com.juangdiaz.bookshelf.fragments;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -59,6 +57,7 @@ public class BookDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         if (getArguments().containsKey(ARG_ITEM)) {
             mBook = getArguments().getParcelable(ARG_ITEM); // get item from bundle
         }
@@ -72,7 +71,6 @@ public class BookDetailFragment extends Fragment {
 
         // Show the content.
         if (mBook != null) {
-        //TODO:add book details
             if (!Strings.isNullOrEmpty(mBook.getTitle())) {
                 ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(Html.fromHtml(mBook.getTitle()).toString()); // title in the action bar
                 bookDetailTitle.setText(Html.fromHtml(mBook.getTitle()).toString());
@@ -92,10 +90,6 @@ public class BookDetailFragment extends Fragment {
             if (!Strings.isNullOrEmpty(mBook.getLastCheckedOutBy())) {
                 bookDetailLastCheckoutBy.setText(Html.fromHtml(mBook.getLastCheckedOutBy()).toString());
             }
-            
-            
-            
-            
         }
 
         return rootView;
