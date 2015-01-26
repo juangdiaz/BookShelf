@@ -6,15 +6,17 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+
 
 import com.juangdiaz.bookshelf.R;
-import com.juangdiaz.bookshelf.fragments.BookDetailFragment;
+import com.juangdiaz.bookshelf.fragments.BookEditFragment;
 import com.juangdiaz.bookshelf.model.Book;
 
 public class BookEditActivity extends ActionBarActivity {
 
     private Book mBook;
+    BookEditFragment mFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,15 +26,15 @@ public class BookEditActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Show the Up button in the action bar.
 
         if (savedInstanceState == null) {
-            mBook = getIntent().getParcelableExtra(BookDetailFragment.ARG_ITEM);
+            mBook = getIntent().getParcelableExtra(BookEditFragment.ARG_ITEM);
             if (mBook != null) {
                 // Edit a book.
                 Bundle arguments = new Bundle();
-                arguments.putParcelable(BookDetailFragment.ARG_ITEM, mBook); // put selected item
-                BookDetailFragment fragment = new BookDetailFragment();
-                fragment.setArguments(arguments);
+                arguments.putParcelable(BookEditFragment.ARG_ITEM, mBook); // put selected item
+                mFragment = new BookEditFragment();
+                mFragment.setArguments(arguments);
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.book_detail_container, fragment)
+                        .add(R.id.book_edit_container, mFragment)
                         .commit();
             } else { // create a book
 
@@ -55,14 +57,18 @@ public class BookEditActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        
+        if (id == R.id.action_done) {
+            //TODO: Create alert
+            //Alert("title", "Are you sure");
+            
             return true;
         } else if (id == android.R.id.home) {
             NavUtils.navigateUpTo(this, new Intent(this, BookListActivity.class));
             return true;
-        }
+        } 
 
         return super.onOptionsItemSelected(item);
     }
+
 }

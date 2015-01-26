@@ -11,32 +11,28 @@
 
 
     <EditText
-        android:id="@+id/editTitle"
+        android:id="@+id/book_edit_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/book_title_edit" />
+        android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/editAuthor"
+        android:id="@+id/book_edit_author"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/book_author_edit" />
+        android:layout_height="wrap_content"/>
     
     <EditText
-        android:id="@+id/editPublisher"
+        android:id="@+id/book_edit_publisher"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/book_publisher_edit" />
+        android:layout_height="wrap_content"/>
     
     <EditText
-        android:id="@+id/editCategories"
+        android:id="@+id/book_edit_categories"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/book_categories_edit" />
+        android:layout_height="wrap_content"/>
     
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/book_submit"
-        android:id="@+id/book_submit" />
+        android:id="@+id/book_edit_submit" />
 </LinearLayout>

@@ -30,7 +30,7 @@ public class BookDetailFragment extends Fragment {
 
     private Book mBook; // the selected item
 
-    //do a call to book/id
+    // TODO: do a call to book/id
     private int bookID;
 
     @InjectView(R.id.book_detail_title)

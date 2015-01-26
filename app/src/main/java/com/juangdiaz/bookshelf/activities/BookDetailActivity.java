@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.juangdiaz.bookshelf.R;
 import com.juangdiaz.bookshelf.fragments.BookDetailFragment;
+import com.juangdiaz.bookshelf.fragments.BookEditFragment;
 import com.juangdiaz.bookshelf.model.Book;
 
 import butterknife.ButterKnife;
@@ -59,6 +60,20 @@ public class BookDetailActivity extends ActionBarActivity {
         if (id == android.R.id.home) {
             NavUtils.navigateUpTo(this, new Intent(this, BookListActivity.class));
             return true;
+        }else if (id == R.id.action_edit) {
+
+
+
+
+                // In single-pane mode, simply start the Edit activity
+                // for the selected book ID.
+                Intent editIntent = new Intent(this, BookEditActivity.class);
+                editIntent.putExtra(BookEditFragment.ARG_ITEM, mBook);
+                startActivity(editIntent);
+
+            
+            
+
         }
         return super.onOptionsItemSelected(item);
     }
