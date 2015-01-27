@@ -38,6 +38,11 @@ public class BookEditActivity extends ActionBarActivity {
                         .commit();
             } else { // create a book
 
+                mFragment = new BookEditFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.book_edit_container, mFragment)
+                        .commit();
+
             }
         }
     }
@@ -57,16 +62,16 @@ public class BookEditActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        
+
         if (id == R.id.action_done) {
             //TODO: Create alert
             //Alert("title", "Are you sure");
-            
+
             return true;
         } else if (id == android.R.id.home) {
             NavUtils.navigateUpTo(this, new Intent(this, BookListActivity.class));
             return true;
-        } 
+        }
 
         return super.onOptionsItemSelected(item);
     }
