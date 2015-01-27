@@ -32,7 +32,7 @@ public class ApiClient {
         @GET("/books/")
         void listBook(Callback<List<Book>> response);
 
-        @GET("/books/{id}/users")
+        @GET("/books/{id}")
         List<Book> detailBook(@Path("id") int bookId);
 
     }
