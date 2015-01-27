@@ -1,5 +1,6 @@
 package com.juangdiaz.bookshelf.fragments;
 
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.juangdiaz.bookshelf.R;
+import com.juangdiaz.bookshelf.data.ApiClient;
 import com.juangdiaz.bookshelf.model.Book;
 
 
@@ -17,6 +19,9 @@ import com.google.common.base.Strings;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class BookDetailFragment extends Fragment {
@@ -27,9 +32,9 @@ public class BookDetailFragment extends Fragment {
     private static final String SAVED_LAST_TITLE = "last_title";
 
     private Book mBook; // the selected item
+    private int bookId;
 
-    // TODO: do a call to book/id
-    private int bookID;
+
 
     @InjectView(R.id.book_detail_title)
     TextView bookDetailTitle;
@@ -59,8 +64,12 @@ public class BookDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         
         if (getArguments().containsKey(ARG_ITEM)) {
-            mBook = getArguments().getParcelable(ARG_ITEM); // get item from bundle
+            bookId = getArguments().getInt(ARG_ITEM); // get item from bundle
+            if(bookId > 0) {
+                downloadData(bookId);
+            }
         }
+        
     }
 
     @Override
@@ -117,4 +126,18 @@ public class BookDetailFragment extends Fragment {
         }
     }
 
+
+    private void downloadData(int bookID) {
+        ApiClient.getsBooksApiClient().detailBook(bookID,new Callback<Book>() {
+            @Override
+            public void success(Book books, Response response) {
+                mBook = books;
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
 }

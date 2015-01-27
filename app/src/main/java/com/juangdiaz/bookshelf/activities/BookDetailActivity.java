@@ -12,17 +12,22 @@ import android.support.v7.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.juangdiaz.bookshelf.R;
+import com.juangdiaz.bookshelf.data.ApiClient;
 import com.juangdiaz.bookshelf.fragments.BookDetailFragment;
 import com.juangdiaz.bookshelf.fragments.BookEditFragment;
 import com.juangdiaz.bookshelf.model.Book;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class BookDetailActivity extends ActionBarActivity {
 
     private ShareActionProvider mShareActionProvider;
     private Book mBook;
+    
 
     @InjectView(R.id.item_detail_empty)
     TextView bookDetailEmpty;
@@ -37,11 +42,12 @@ public class BookDetailActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Show the Up button in the action bar.
 
         if (savedInstanceState == null) {
-             mBook = getIntent().getParcelableExtra(BookDetailFragment.ARG_ITEM);
-            if (mBook != null) {
+
+
+            if (getIntent().hasExtra(BookDetailFragment.ARG_ITEM)) {
                 // Create the detail fragment and add it to the activity using a fragment transaction.
                 Bundle arguments = new Bundle();
-                arguments.putParcelable(BookDetailFragment.ARG_ITEM, mBook); // put selected item
+                arguments.putInt(BookDetailFragment.ARG_ITEM, 0); // put selected item
                 BookDetailFragment fragment = new BookDetailFragment();
                 fragment.setArguments(arguments);
                 getSupportFragmentManager().beginTransaction()
@@ -54,6 +60,8 @@ public class BookDetailActivity extends ActionBarActivity {
         
         
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
