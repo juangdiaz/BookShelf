@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+
 import com.juangdiaz.bookshelf.R;
 import com.juangdiaz.bookshelf.data.ApiClient;
 import com.juangdiaz.bookshelf.model.Book;
@@ -19,20 +20,17 @@ import com.google.common.base.Strings;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 
 public class BookDetailFragment extends Fragment {
 
 
-    public static final String ARG_ITEM = "selected_book_id";
+    public static final String ARG_BOOK = "selected_book";
 
     private static final String SAVED_LAST_TITLE = "last_title";
 
     private Book mBook; // the selected item
-    private int bookId;
+
 
 
 
@@ -62,14 +60,11 @@ public class BookDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        if (getArguments().containsKey(ARG_ITEM)) {
-            bookId = getArguments().getInt(ARG_ITEM); // get item from bundle
-            if(bookId > 0) {
-                downloadData(bookId);
-            }
+
+        if (getArguments().containsKey(ARG_BOOK)) {
+            mBook = getArguments().getParcelable(ARG_BOOK); // get item from bundle
         }
-        
+
     }
 
     @Override
@@ -127,17 +122,4 @@ public class BookDetailFragment extends Fragment {
     }
 
 
-    private void downloadData(int bookID) {
-        ApiClient.getsBooksApiClient().detailBook(bookID,new Callback<Book>() {
-            @Override
-            public void success(Book books, Response response) {
-                mBook = books;
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
-    }
 }

@@ -66,7 +66,7 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putInt(BookDetailFragment.ARG_ITEM, selectedItem.getId()); // put selected item
+            arguments.putInt(BookDetailActivity.ARG_BOOK_ID, selectedItem.getId()); // put selected item
             BookDetailFragment fragment = new BookDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -77,7 +77,7 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, BookDetailActivity.class);
-            detailIntent.putExtra(BookDetailFragment.ARG_ITEM, selectedItem.getId());
+            detailIntent.putExtra(BookDetailActivity.ARG_BOOK_ID, selectedItem.getId());
             startActivity(detailIntent);
         }
 

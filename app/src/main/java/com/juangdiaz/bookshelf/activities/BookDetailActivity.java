@@ -1,5 +1,6 @@
 package com.juangdiaz.bookshelf.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.MenuItemCompat;
@@ -27,6 +28,10 @@ public class BookDetailActivity extends ActionBarActivity {
 
     private ShareActionProvider mShareActionProvider;
     private Book mBook;
+    private ProgressDialog loading;
+    private int bookId;
+    public static final String ARG_BOOK_ID = "selected_book_id";
+
     
 
     @InjectView(R.id.item_detail_empty)
@@ -44,10 +49,17 @@ public class BookDetailActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
 
 
-            if (getIntent().hasExtra(BookDetailFragment.ARG_ITEM)) {
+            if (getIntent().hasExtra(ARG_BOOK_ID)) {
+
+                bookId = getIntent().getIntExtra(ARG_BOOK_ID ,0); // get item from bundle
+                if(bookId > 0) {
+                    showLoading();
+                    downloadData(bookId);
+                }
+
                 // Create the detail fragment and add it to the activity using a fragment transaction.
                 Bundle arguments = new Bundle();
-                arguments.putInt(BookDetailFragment.ARG_ITEM, 0); // put selected item
+                arguments.putParcelable(BookDetailFragment.ARG_BOOK, mBook); // put selected item
                 BookDetailFragment fragment = new BookDetailFragment();
                 fragment.setArguments(arguments);
                 getSupportFragmentManager().beginTransaction()
@@ -100,9 +112,32 @@ public class BookDetailActivity extends ActionBarActivity {
         return true;
     }
 
+
+    private void downloadData(int bookID) {
+        ApiClient.getsBooksApiClient().detailBook(bookID,new Callback<Book>() {
+            @Override
+            public void success(Book books, Response response) {
+                mBook = books;
+                loading.dismiss();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+        private void showLoading(){
+                loading = new ProgressDialog(this);
+               loading.setTitle("Loading");
+                loading.setMessage("Wait while loading...");
+                loading.show();
+            }
+
+
     // Call to update the share intent
     private void setShareIntent() {
-
+/*
         // create an Intent with the contents of the TextView
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
@@ -112,6 +147,7 @@ public class BookDetailActivity extends ActionBarActivity {
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(shareIntent);
         }
+        */
     }
 
     
