@@ -51,7 +51,7 @@ public class BookDetailActivity extends ActionBarActivity {
 
             if (getIntent().hasExtra(ARG_BOOK_ID)) {
 
-                bookId = getIntent().getIntExtra(ARG_BOOK_ID ,0); // get item from bundle
+                bookId = getIntent().getIntExtra(ARG_BOOK_ID ,0); // get book id from intent
                 if(bookId > 0) {
                     showLoading();
                     downloadData(bookId);
