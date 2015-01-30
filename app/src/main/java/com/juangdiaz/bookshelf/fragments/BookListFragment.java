@@ -84,7 +84,7 @@ public class BookListFragment extends Fragment implements
 
 
     private void downloadData() {
-        ApiClient.getsBooksApiClient().listBook(new Callback<List<Book>>() {
+         ApiClient.getsBooksApiClient().listBook(new Callback<List<Book>>() {
             @Override
             public void success(List<Book> books, Response response) {
                 streamBookData = books;

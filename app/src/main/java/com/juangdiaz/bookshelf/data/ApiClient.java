@@ -18,13 +18,13 @@ public class ApiClient {
 
 
     public static BooksApiInterface getsBooksApiClient() {
-        if (sBooksService == null) {
+       // if (sBooksService == null) {
             RestAdapter restAdapter = new RestAdapter.Builder()
                     .setEndpoint("http://prolific-interview.herokuapp.com/54b5c027522f9c0007f3b2a6")
                     .build();
 
          sBooksService = restAdapter.create(BooksApiInterface.class);
-        }
+        //}
         return sBooksService;
     }
 
@@ -32,8 +32,8 @@ public class ApiClient {
         @GET("/books/")
         void listBook(Callback<List<Book>> response);
 
-        @GET("/books/{id}")
-        List<Book> detailBook(@Path("id") int bookId);
+        @GET("/books/{id}/")
+        void detailBook(@Path("id") int id,Callback<Book> response);
 
     }
 
