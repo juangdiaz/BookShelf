@@ -29,7 +29,6 @@ public class BookDetailActivity extends ActionBarActivity {
     private ShareActionProvider mShareActionProvider;
     private Book mBook;
     private ProgressDialog loading;
-    private int bookId;
     public static final String ARG_BOOK_ID = "selected_book_id";
 
     
@@ -47,24 +46,15 @@ public class BookDetailActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Show the Up button in the action bar.
 
         if (savedInstanceState == null) {
-
-
             if (getIntent().hasExtra(ARG_BOOK_ID)) {
 
-                bookId = getIntent().getIntExtra(ARG_BOOK_ID ,0); // get book id from intent
+                int bookId = getIntent().getIntExtra(ARG_BOOK_ID ,0); // get book id from intent
                 if(bookId > 0) {
                     showLoading();
                     downloadData(bookId);
                 }
 
-                // Create the detail fragment and add it to the activity using a fragment transaction.
-                Bundle arguments = new Bundle();
-                arguments.putParcelable(BookDetailFragment.ARG_BOOK, mBook); // put selected item
-                BookDetailFragment fragment = new BookDetailFragment();
-                fragment.setArguments(arguments);
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.book_detail_container, fragment)
-                        .commit();
+           
             } else {
                 bookDetailEmpty.setVisibility(View.VISIBLE); // show empty view
             }
@@ -106,18 +96,27 @@ public class BookDetailActivity extends ActionBarActivity {
             mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
         }
 
-        setShareIntent();
-
         // Return true to display menu
         return true;
     }
 
 
     private void downloadData(int bookID) {
-        ApiClient.getsBooksApiClient().detailBook(bookID,new Callback<Book>() {
+        ApiClient.getsBooksApiClient().detailBook(bookID, new Callback<Book>() {
             @Override
             public void success(Book books, Response response) {
                 mBook = books;
+
+                // Create the detail fragment and add it to the activity using a fragment transaction.
+                Bundle arguments = new Bundle();
+                arguments.putParcelable(BookDetailFragment.ARG_BOOK, mBook); // put selected item
+                BookDetailFragment fragment = new BookDetailFragment();
+                fragment.setArguments(arguments);
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.book_detail_container, fragment)
+                        .commit();
+
+                setShareIntent();
                 loading.dismiss();
             }
 
@@ -127,17 +126,18 @@ public class BookDetailActivity extends ActionBarActivity {
             }
         });
     }
-        private void showLoading(){
-                loading = new ProgressDialog(this);
-               loading.setTitle("Loading");
-                loading.setMessage("Wait while loading...");
-                loading.show();
-            }
+
+    private void showLoading() {
+        loading = new ProgressDialog(this);
+        loading.setTitle("Loading");
+        loading.setMessage("Wait while loading...");
+        loading.show();
+    }
 
 
     // Call to update the share intent
     private void setShareIntent() {
-/*
+
         // create an Intent with the contents of the TextView
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
@@ -147,7 +147,7 @@ public class BookDetailActivity extends ActionBarActivity {
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(shareIntent);
         }
-        */
+
     }
 
     
