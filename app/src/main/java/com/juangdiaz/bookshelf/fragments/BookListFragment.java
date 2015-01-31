@@ -1,8 +1,10 @@
 package com.juangdiaz.bookshelf.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.support.v4.app.Fragment;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.juangdiaz.bookshelf.R;
 import com.juangdiaz.bookshelf.adapters.ListAdapter;
@@ -29,11 +32,17 @@ import retrofit.client.Response;
 public class BookListFragment extends Fragment implements
         AbsListView.OnScrollListener, AbsListView.OnItemClickListener {
 
-    ListView mListView;
+
+    private ProgressDialog loading;
+    
     @InjectView(R.id.list_view)
+    ListView mListView;
+    
+    @InjectView(R.id.list_progressbar)
+    ProgressBar mProgressBar;
 
 
-    ListView bookList;
+    
     ListAdapter mListAdapter;
     private List<Book> streamBookData = new ArrayList<>();
 
@@ -68,8 +77,8 @@ public class BookListFragment extends Fragment implements
         if (mListAdapter == null) {
             mListAdapter = new ListAdapter(getActivity(), 0,streamBookData);
         }
-
-
+        
+        showLoading();
         downloadData();
 
     }
@@ -89,6 +98,9 @@ public class BookListFragment extends Fragment implements
             public void success(List<Book> books, Response response) {
                 streamBookData = books;
                 updateDisplay();
+                //testing loading Dialog
+                //SystemClock.sleep(10000);
+                loading.dismiss();
             }
 
             @Override
@@ -101,10 +113,9 @@ public class BookListFragment extends Fragment implements
     public void updateDisplay(){
 
         mListAdapter = new ListAdapter(getActivity(),0,streamBookData);
-        bookList.setAdapter(mListAdapter);
+        mListView.setAdapter(mListAdapter);
 
-        bookList.setOnItemClickListener(this);
-        //mListView.setOnScrollListener(this);
+        mListView.setOnItemClickListener(this);
 
     }
     
@@ -147,6 +158,13 @@ public class BookListFragment extends Fragment implements
 
     }
 
+    private void showLoading() {
+        loading = new ProgressDialog(getActivity());
+        loading.setTitle("Loading");
+        loading.setMessage("Wait while loading...");
+        loading.show();
+    }
+
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -170,27 +188,6 @@ public class BookListFragment extends Fragment implements
         }
     };
     
-    
-    
-    
-    
-    
-    
-    
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
 
 }

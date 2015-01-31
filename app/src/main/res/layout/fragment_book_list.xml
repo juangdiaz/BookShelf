@@ -8,6 +8,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.juangdiaz.bookshelf.fragments.BookListFragment">
 
+    <ProgressBar
+        android:id="@+id/list_progressbar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 
     <ListView
         android:id="@+id/list_view"

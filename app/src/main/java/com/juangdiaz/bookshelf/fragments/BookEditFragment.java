@@ -176,18 +176,21 @@ public class BookEditFragment extends Fragment {
             AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
             alert.setMessage("All Fields are required");
 
-            // Make an "OK" to exit
             alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
                 public void onClick(DialogInterface dialog, int whichButton) {
 
+                    return;
                 }
             });
             alert.show();
         }
+        
+        //Save info to API
 
     }
 
+    //Check for empty EditText Fields
     private boolean isEmpty(EditText etText) {
         return etText.getText().toString().trim().length() == 0;
     }

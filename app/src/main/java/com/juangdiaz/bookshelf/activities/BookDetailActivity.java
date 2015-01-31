@@ -1,6 +1,7 @@
 package com.juangdiaz.bookshelf.activities;
 
 import android.app.ProgressDialog;
+import android.os.SystemClock;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -67,7 +68,8 @@ public class BookDetailActivity extends ActionBarActivity {
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.book_detail_container, fragment)
                         .commit();
-
+                //testing loading Dialog
+                //SystemClock.sleep(3000);
                 loading.dismiss();
             }
 

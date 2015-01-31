@@ -1,5 +1,6 @@
 package com.juangdiaz.bookshelf.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -21,6 +22,7 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
      * device.
      */
     private boolean mTwoPane;
+
 
 
 
