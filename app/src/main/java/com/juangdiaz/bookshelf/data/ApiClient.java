@@ -55,7 +55,8 @@ public class ApiClient {
         @PUT("/books/{id}")
         void checkoutBook(
                 @Path("id") int id,
-                @Field("lastCheckedOutBy") String checkOutBy
+                @Field("lastCheckedOutBy") String checkOutBy,
+                Callback<Book> response
         );
 
 
