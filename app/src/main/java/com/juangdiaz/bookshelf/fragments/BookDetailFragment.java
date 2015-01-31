@@ -56,9 +56,6 @@ public class BookDetailFragment extends Fragment  {
 
     // Access the device's key-value storage
     SharedPreferences mSharedPreferences;
-    private ShareActionProvider mShareActionProvider;
-
-
 
 
     @InjectView(R.id.book_detail_title)

@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.common.base.Strings;
@@ -27,7 +29,7 @@ import butterknife.InjectView;
  * A simple {@link Fragment} subclass.
  */
 public class BookEditFragment extends Fragment {
-    
+
     public static final String ARG_ITEM = "selected_book_id";
 
     private static final String SAVED_LAST_TITLE = "last_title";
@@ -35,17 +37,19 @@ public class BookEditFragment extends Fragment {
     private Book mBook; // the selected item
 
     @InjectView(R.id.book_edit_title)
-    TextView bookEditTitle;
+    EditText bookEditTitle;
 
     @InjectView(R.id.book_edit_author)
-    TextView bookEditAuthor;
+    EditText bookEditAuthor;
 
     @InjectView(R.id.book_edit_publisher)
-    TextView bookEditPublisher;
+    EditText bookEditPublisher;
 
     @InjectView(R.id.book_edit_categories)
-    TextView bookEditCategories;
+    EditText bookEditCategories;
 
+    @InjectView(R.id.book_edit_submit)
+    Button submitButton;
 
 
     public BookEditFragment() {
@@ -57,15 +61,14 @@ public class BookEditFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
-        
-        if(getArguments() != null) { //edit
+
+        if (getArguments() != null) { //edit
             if (getArguments().containsKey(ARG_ITEM)) {
                 mBook = getArguments().getParcelable(ARG_ITEM); // get item from bundle
             }
-        }
-        else{
+        } else {
 
-            
+
         }//Add new
     }
 
@@ -94,10 +97,18 @@ public class BookEditFragment extends Fragment {
                 bookEditCategories.setHint("");
                 bookEditCategories.setText(Html.fromHtml(mBook.getCategories()).toString());
             }
-        } 
-        else {
-            
+        } else {
+
         }
+
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitBook();
+            }
+        });
+
 
         return rootView;
     }
@@ -128,10 +139,8 @@ public class BookEditFragment extends Fragment {
     }
 
 
+    public void exitDialog() {
 
-
-    public void exitDialog(){
-        
         // Ask for their name
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle("Are you sure?");
@@ -151,11 +160,37 @@ public class BookEditFragment extends Fragment {
         // that simply dismisses the alert
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
-            public void onClick(DialogInterface dialog, int whichButton) {}
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
         });
         alert.show();
     }
-    
-    
+
+    private void submitBook() {
+
+        if (isEmpty(bookEditTitle) ||
+            isEmpty(bookEditAuthor) ||
+            isEmpty(bookEditPublisher) ||
+            isEmpty(bookEditCategories)) {
+            
+            AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+            alert.setMessage("All Fields are required");
+
+            // Make an "OK" to exit
+            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int whichButton) {
+
+                }
+            });
+            alert.show();
+        }
+
+    }
+
+    private boolean isEmpty(EditText etText) {
+        return etText.getText().toString().trim().length() == 0;
+    }
+
 
 }
