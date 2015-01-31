@@ -99,10 +99,7 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_add) {
+         if (id == R.id.action_add) {
 
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.

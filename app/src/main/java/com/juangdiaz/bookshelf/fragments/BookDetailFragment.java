@@ -10,6 +10,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -80,6 +82,7 @@ public class BookDetailFragment extends Fragment  {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         if (getArguments().containsKey(ARG_BOOK)) {
             mBook = getArguments().getParcelable(ARG_BOOK); // get item from bundle
@@ -151,6 +154,22 @@ public class BookDetailFragment extends Fragment  {
         }
     }
 
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // TODO Auto-generated method stub
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_book_detail, menu);
+    }
+
+
+
+
+
+
+
+
     public void updateCheckout() {
         //TODO: dialog asking for name
         getCheckoutNameDialog();
@@ -159,13 +178,7 @@ public class BookDetailFragment extends Fragment  {
         // or an empty string if nothing found
     
         String checkoutBy = mSharedPreferences.getString(PREF_NAME, "");
-        
-
-        
-        
-        
-
-    
+       
     }
     
     
