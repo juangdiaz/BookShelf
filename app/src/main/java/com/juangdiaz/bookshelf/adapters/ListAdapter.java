@@ -1,18 +1,15 @@
 package com.juangdiaz.bookshelf.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.juangdiaz.bookshelf.R;
 import com.juangdiaz.bookshelf.model.Book;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,8 +17,6 @@ import java.util.List;
  */
 public class ListAdapter extends ArrayAdapter<Book> {
 
-
-    List<Book> Books;
 
     private final LayoutInflater mLayoutInflater;
     private Context mContext;
@@ -33,8 +28,6 @@ public class ListAdapter extends ArrayAdapter<Book> {
 
         mContext = context;
         mLayoutInflater = LayoutInflater.from(mContext);
-
-
     }
 
     @Override
@@ -60,9 +53,6 @@ public class ListAdapter extends ArrayAdapter<Book> {
 
         return row;
     }
-    
-
-
 
     // Holder class used to efficiently recycle view positions 
     private static final class BooksViewHolder {

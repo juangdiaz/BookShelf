@@ -14,19 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.common.base.Strings;
 import com.juangdiaz.bookshelf.R;
 import com.juangdiaz.bookshelf.activities.BookListActivity;
-import com.juangdiaz.bookshelf.data.ApiClient;
 import com.juangdiaz.bookshelf.model.Book;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,12 +65,6 @@ public class BookEditFragment extends Fragment {
         }
         else{
 
-            //TODO: need to fix this
-            /*bookEditTitle.setHint(R.string.book_title_edit);
-            bookEditAuthor.setHint(R.string.book_author_edit);
-            bookEditPublisher.setHint(R.string.book_publisher_edit);
-            bookEditCategories.setHint(R.string.book_categories_edit);
-            */
             
         }//Add new
     }
@@ -155,7 +144,6 @@ public class BookEditFragment extends Fragment {
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
-
             }
         });
 
@@ -165,7 +153,6 @@ public class BookEditFragment extends Fragment {
 
             public void onClick(DialogInterface dialog, int whichButton) {}
         });
-
         alert.show();
     }
     

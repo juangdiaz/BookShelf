@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.juangdiaz.bookshelf.R;
 import com.juangdiaz.bookshelf.data.ApiClient;
 import com.juangdiaz.bookshelf.fragments.BookDetailFragment;
-import com.juangdiaz.bookshelf.fragments.BookEditFragment;
 import com.juangdiaz.bookshelf.model.Book;
 
 import butterknife.ButterKnife;
@@ -46,8 +45,6 @@ public class BookDetailActivity extends ActionBarActivity {
                     showLoading();
                     downloadData(bookId);
                 }
-
-           
             } else {
                 bookDetailEmpty.setVisibility(View.VISIBLE); // show empty view
             }

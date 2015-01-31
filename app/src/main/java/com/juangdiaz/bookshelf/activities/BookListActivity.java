@@ -54,7 +54,6 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
 
 
 
-//TODO: do this next
     /**
      * Callback method from {@link com.juangdiaz.bookshelf.fragments.BookListFragment.Callbacks}
      * indicating that the item with the given ID was selected.
