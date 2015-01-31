@@ -4,10 +4,12 @@ package com.juangdiaz.bookshelf.fragments;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,9 +20,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v4.app.NavUtils;
+import android.support.v4.view.MenuItemCompat;
+import android.view.MenuItem;
 
 
 import com.juangdiaz.bookshelf.R;
+import com.juangdiaz.bookshelf.activities.BookEditActivity;
+import com.juangdiaz.bookshelf.activities.BookListActivity;
 import com.juangdiaz.bookshelf.data.ApiClient;
 import com.juangdiaz.bookshelf.model.Book;
 
@@ -49,6 +56,7 @@ public class BookDetailFragment extends Fragment  {
 
     // Access the device's key-value storage
     SharedPreferences mSharedPreferences;
+    private ShareActionProvider mShareActionProvider;
 
 
 
@@ -87,6 +95,7 @@ public class BookDetailFragment extends Fragment  {
         if (getArguments().containsKey(ARG_BOOK)) {
             mBook = getArguments().getParcelable(ARG_BOOK); // get item from bundle
         }
+        setShareIntent();
 
     }
 
@@ -122,6 +131,7 @@ public class BookDetailFragment extends Fragment  {
         //Get shared Preferences
         mSharedPreferences = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         
+        
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,17 +165,54 @@ public class BookDetailFragment extends Fragment  {
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
+            return true;
+        }else if (id == R.id.action_edit) {
+            // In single-pane mode, simply start the Edit activity
+            // for the selected book ID.
+            Intent editIntent = new Intent(getActivity(), BookEditActivity.class);
+            editIntent.putExtra(BookEditFragment.ARG_ITEM, mBook);
+            startActivity(editIntent);
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // TODO Auto-generated method stub
-        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_book_detail, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuShare = menu.findItem(R.id.menu_item_share);
+        ShareActionProvider shareAction = (ShareActionProvider) MenuItemCompat.getActionProvider(menuShare);
+
+        shareAction.setShareIntent(setShareIntent());
     }
 
 
 
+    // Call to update the share intent
+    private Intent  setShareIntent() {
 
+        // create an Intent with the contents of the TextView
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, mBook.getTitle());
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Going to read this cool book: " + mBook.getTitle());
+
+        return shareIntent;
+
+
+    }
 
 
 
@@ -176,8 +223,6 @@ public class BookDetailFragment extends Fragment  {
 
         // Read the user's name,
         // or an empty string if nothing found
-    
-        String checkoutBy = mSharedPreferences.getString(PREF_NAME, "");
        
     }
     

@@ -1,16 +1,26 @@
 package com.juangdiaz.bookshelf.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.Toast;
 
 
 import com.juangdiaz.bookshelf.R;
+import com.juangdiaz.bookshelf.data.ApiClient;
 import com.juangdiaz.bookshelf.fragments.BookEditFragment;
 import com.juangdiaz.bookshelf.model.Book;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class BookEditActivity extends ActionBarActivity {
 
@@ -56,24 +66,8 @@ public class BookEditActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-
-        if (id == R.id.action_done) {
-            //TODO: Create alert
-            //Alert("title", "Are you sure");
-
-            return true;
-        } else if (id == android.R.id.home) {
-            NavUtils.navigateUpTo(this, new Intent(this, BookListActivity.class));
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public void onBackPressed() {
+        mFragment.onBackPressed();
     }
 
 }

@@ -1,21 +1,32 @@
 package com.juangdiaz.bookshelf.fragments;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.common.base.Strings;
 import com.juangdiaz.bookshelf.R;
+import com.juangdiaz.bookshelf.activities.BookListActivity;
+import com.juangdiaz.bookshelf.data.ApiClient;
 import com.juangdiaz.bookshelf.model.Book;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +60,9 @@ public class BookEditFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+        
         if(getArguments() != null) { //edit
             if (getArguments().containsKey(ARG_ITEM)) {
                 mBook = getArguments().getParcelable(ARG_ITEM); // get item from bundle
@@ -99,5 +113,62 @@ public class BookEditFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+
+        if (id == R.id.action_done) {
+            exitDialog();
+
+            return true;
+        } else if (id == android.R.id.home) {
+            exitDialog();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    public void onBackPressed() {
+        exitDialog();
+    }
+
+
+
+
+    public void exitDialog(){
+        
+        // Ask for their name
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setTitle("Are you sure?");
+        alert.setMessage("Do you want to continue without saving?");
+
+
+        // Make an "OK" to exit
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
+
+            }
+        });
+
+        // Make a "Cancel" button
+        // that simply dismisses the alert
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int whichButton) {}
+        });
+
+        alert.show();
+    }
+    
+    
 
 }

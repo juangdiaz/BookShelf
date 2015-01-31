@@ -1,15 +1,9 @@
 package com.juangdiaz.bookshelf.activities;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.support.v4.app.NavUtils;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.support.v7.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.juangdiaz.bookshelf.R;
@@ -26,12 +20,11 @@ import retrofit.client.Response;
 
 public class BookDetailActivity extends ActionBarActivity {
 
-    private ShareActionProvider mShareActionProvider;
+
     private Book mBook;
     private ProgressDialog loading;
     public static final String ARG_BOOK_ID = "selected_book_id";
 
-    
 
     @InjectView(R.id.item_detail_empty)
     TextView bookDetailEmpty;
@@ -63,44 +56,6 @@ public class BookDetailActivity extends ActionBarActivity {
         
     }
 
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            NavUtils.navigateUpTo(this, new Intent(this, BookListActivity.class));
-            return true;
-        }else if (id == R.id.action_edit) {
-                // In single-pane mode, simply start the Edit activity
-                // for the selected book ID.
-                Intent editIntent = new Intent(this, BookEditActivity.class);
-                editIntent.putExtra(BookEditFragment.ARG_ITEM, mBook);
-                startActivity(editIntent);
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate menu resource file.
-        getMenuInflater().inflate(R.menu.menu_book_detail, menu);
-
-        // Locate MenuItem with ShareActionProvider
-        MenuItem item = menu.findItem(R.id.menu_item_share);
-
-        // Fetch and store ShareActionProvider
-        if (item != null) {
-            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-        }
-
-        // Return true to display menu
-        return true;
-    }
-
-
     private void downloadData(int bookID) {
         ApiClient.getsBooksApiClient().detailBook(bookID, new Callback<Book>() {
             @Override
@@ -116,7 +71,6 @@ public class BookDetailActivity extends ActionBarActivity {
                         .add(R.id.book_detail_container, fragment)
                         .commit();
 
-                setShareIntent();
                 loading.dismiss();
             }
 
@@ -135,20 +89,7 @@ public class BookDetailActivity extends ActionBarActivity {
     }
 
 
-    // Call to update the share intent
-    private void setShareIntent() {
 
-        // create an Intent with the contents of the TextView
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, mBook.getTitle());
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "Going to read this cool book" + mBook.getTitle());
-
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(shareIntent);
-        }
-
-    }
 
     
 }
