@@ -27,6 +27,7 @@ public class ApiClient {
     public static BooksApiInterface getsBooksApiClient() {
        // if (sBooksService == null) {
             RestAdapter restAdapter = new RestAdapter.Builder()
+                    .setLogLevel(RestAdapter.LogLevel.FULL)
                     .setEndpoint("http://prolific-interview.herokuapp.com/54b5c027522f9c0007f3b2a6")
                     .build();
 
@@ -63,7 +64,7 @@ public class ApiClient {
                 @Field("categories") String categories);
 
         
-        @FormUrlEncoded 
+        @FormUrlEncoded
         @PUT("/books/{id}") 
         Observable<Book> checkoutBook(
                 @Path("id") int id,
