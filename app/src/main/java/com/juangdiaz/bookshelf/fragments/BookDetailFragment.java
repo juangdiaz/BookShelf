@@ -104,7 +104,6 @@ public class BookDetailFragment extends Fragment {
         if (getArguments().containsKey(ARG_BOOK)) {
             mBook = getArguments().getParcelable(ARG_BOOK); // get item from bundle
         }
-        setShareIntent();
 
     }
 
@@ -132,18 +131,22 @@ public class BookDetailFragment extends Fragment {
             if (!Strings.isNullOrEmpty(mBook.getLastCheckedOut())) {
                 bookDetailLastCheckout.setText(Html.fromHtml(mBook.getLastCheckedOutBy() + " @ " + mBook.lastCheckedOutFormattedDate()).toString());
             }
+            
+            //Get shared Preferences
+            mSharedPreferences = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+
+
+            setShareIntent();
+
+            checkoutButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateCheckout();
+                }
+            });
         }
 
-        //Get shared Preferences
-        mSharedPreferences = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-
-
-        checkoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateCheckout();
-            }
-        });
+        
 
         return rootView;
     }

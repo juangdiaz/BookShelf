@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.juangdiaz.bookshelf.R;
 import com.juangdiaz.bookshelf.fragments.BookDetailFragment;
+import com.juangdiaz.bookshelf.model.Book;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -28,10 +29,11 @@ public class BookDetailActivity extends ActionBarActivity {
 
         if (savedInstanceState == null) {
 
-            if (getIntent().hasExtra(BookDetailFragment.ARG_BOOK)) {
+            Book mBook = getIntent().getParcelableExtra(BookDetailFragment.ARG_BOOK);
+            if (mBook != null) {
                 // Create the detail fragment and add it to the activity using a fragment transaction.
                 Bundle arguments = new Bundle();
-                arguments.putInt(BookDetailFragment.ARG_BOOK, 0); // put selected item
+                arguments.putParcelable(BookDetailFragment.ARG_BOOK, mBook); // put selected item
                 BookDetailFragment fragment = new BookDetailFragment();
                 fragment.setArguments(arguments);
                 getSupportFragmentManager().beginTransaction()
