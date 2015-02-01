@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.common.base.Strings;
 import com.juangdiaz.bookshelf.R;
@@ -49,7 +50,7 @@ public class BookEditFragment extends Fragment {
     private static final String PREF_NAME = "name";
 
 
-
+    private boolean mTwoPane;
 
     // Access the device's key-value storage
     SharedPreferences mSharedPreferences;
@@ -83,15 +84,16 @@ public class BookEditFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
-
+        
+        if (getActivity().findViewById(R.id.book_detail_container) != null) {
+            mTwoPane = true;
+        }
+        
         if (getArguments() != null) { //edit
             if (getArguments().containsKey(ARG_ITEM)) {
                 mBook = getArguments().getParcelable(ARG_ITEM); // get item from bundle
             }
-        } else {
-
-
-        }//Add new
+        } 
     }
 
     @Override
@@ -127,18 +129,12 @@ public class BookEditFragment extends Fragment {
                 bookEditCheckOutBy.setHint("");
                 bookEditCheckOutBy.setText(Html.fromHtml(mBook.getLastCheckedOutBy()).toString());
             }
-
-            
-            
             
         } else {
-
             bookEditCheckOutBy.setHint("");
             bookEditCheckOutBy.setText(checkoutBy);
-
         }
-
-
+        
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,7 +185,12 @@ public class BookEditFragment extends Fragment {
 
             public void onClick(DialogInterface dialog, int whichButton) {
 
-                NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
+                if(mTwoPane) {
+                    Intent listIntent = new Intent(getActivity(), BookListActivity.class);
+                    startActivity(listIntent);
+                } else {
+                    NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
+                }
             }
         });
 
@@ -270,17 +271,16 @@ public class BookEditFragment extends Fragment {
 
 
                         @Override public void onNext(Book book) {
-                            new AlertDialog.Builder(getActivity())
-                                    .setTitle("Message")
-                                    .setMessage("Book successfully Updated!")
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
-
-                                        }
-                                    })
-                                    .show();
+                            Toast.makeText(getActivity(), "Book successfully Updated!"
+                                    , Toast.LENGTH_LONG).show();
+                            if(mTwoPane) {
+                                Intent listIntent = new Intent(getActivity(), BookListActivity.class);
+                                startActivity(listIntent);
+                            } else {
+                                NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
+                            }
+                            
+                            
                         }
                     });
 
@@ -325,10 +325,19 @@ public class BookEditFragment extends Fragment {
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
+                                            if(mTwoPane) {
+                                                Intent listIntent = new Intent(getActivity(), BookListActivity.class);
+                                                startActivity(listIntent);
+                                            } else {
+                                                NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
+                                            }
                                         }
                                     })
                                     .show();
+                            
+                            
+                            
+                            
                         }
                     });
 

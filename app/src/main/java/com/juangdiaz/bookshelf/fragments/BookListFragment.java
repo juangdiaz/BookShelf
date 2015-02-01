@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.support.v4.app.Fragment;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.juangdiaz.bookshelf.R;
 import com.juangdiaz.bookshelf.adapters.ListAdapter;
@@ -27,10 +28,11 @@ import butterknife.InjectView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 
 
-public class BookListFragment extends Fragment implements
-        AbsListView.OnScrollListener, AbsListView.OnItemClickListener {
+public class BookListFragment extends Fragment implements AbsListView.OnItemClickListener {
 
 
     private ProgressDialog loading;
@@ -92,21 +94,27 @@ public class BookListFragment extends Fragment implements
 
 
     private void downloadData() {
-         ApiClient.getsBooksApiClient().listBook(new Callback<List<Book>>() {
-            @Override
-            public void success(List<Book> books, Response response) {
-                streamBookData = books;
-                updateDisplay();
-                //testing loading Dialog
-                //SystemClock.sleep(10000);
-                loading.dismiss();
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
+        ApiClient.getsBooksApiClient().listBook()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Book>>() {
+                    @Override public void onCompleted() {
+                        loading.dismiss();
+                    }
 
-            }
-        });
+
+                    @Override public void onError(Throwable e) {
+                        Toast.makeText(getActivity(), "Failed to retrieve list of books",
+                                Toast.LENGTH_LONG).show();
+                    }
+
+
+                    @Override public void onNext(List<Book> books) {
+                        streamBookData = books;
+                        updateDisplay();
+                        
+                    }
+                });
     }
 
     public void updateDisplay(){
@@ -117,12 +125,7 @@ public class BookListFragment extends Fragment implements
         mListView.setOnItemClickListener(this);
 
     }
-    
-    
-    
-    
-    
-    
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -147,15 +150,7 @@ public class BookListFragment extends Fragment implements
         mCallbacks.onItemSelected( mListAdapter.getItem(position));
     }
 
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
 
-    }
-
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-    }
 
     private void showLoading() {
         loading = new ProgressDialog(getActivity());

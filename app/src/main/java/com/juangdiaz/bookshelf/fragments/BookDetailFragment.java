@@ -60,6 +60,8 @@ public class BookDetailFragment extends Fragment {
     private static final String PREF_NAME = "name";
 
 
+    private boolean mTwoPane;
+
     private ProgressDialog loading;
 
 
@@ -94,6 +96,10 @@ public class BookDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        
+        if (getActivity().findViewById(R.id.book_detail_container) != null) {
+            mTwoPane = true;
+        }
 
         if (getArguments().containsKey(ARG_BOOK)) {
             mBook = getArguments().getParcelable(ARG_BOOK); // get item from bundle
@@ -183,8 +189,7 @@ public class BookDetailFragment extends Fragment {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<String>() {
                         @Override public void onCompleted() {
-                            NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
-
+                            
                         }
 
 
@@ -197,6 +202,12 @@ public class BookDetailFragment extends Fragment {
                         @Override public void onNext(String s) {
                             Toast.makeText(getActivity(), "Book deleted!",
                                     Toast.LENGTH_LONG).show();
+                            if(mTwoPane) {
+                                Intent listIntent = new Intent(getActivity(), BookListActivity.class);
+                                startActivity(listIntent);
+                            } else {
+                                NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
+                            }
                             
                         }
                     });
@@ -285,8 +296,6 @@ public class BookDetailFragment extends Fragment {
                             @Override
                             public void onCompleted() {
                                 loading.dismiss();
-                                NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
-                                
                             }
 
 
@@ -302,6 +311,12 @@ public class BookDetailFragment extends Fragment {
                             public void onNext(Book book) {
                                 Toast.makeText(getActivity(), "You have checked out the book: " + mBook.getTitle()
                                         , Toast.LENGTH_LONG).show();
+                                if(mTwoPane) {
+                                    Intent listIntent = new Intent(getActivity(), BookListActivity.class);
+                                    startActivity(listIntent);
+                                } else {
+                                    NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
+                                }
                             }
                         });
         }

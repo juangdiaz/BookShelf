@@ -25,25 +25,22 @@ public class ApiClient {
 
 
     public static BooksApiInterface getsBooksApiClient() {
-       // if (sBooksService == null) {
             RestAdapter restAdapter = new RestAdapter.Builder()
                     .setLogLevel(RestAdapter.LogLevel.FULL)
                     .setEndpoint("http://prolific-interview.herokuapp.com/54b5c027522f9c0007f3b2a6")
                     .build();
 
          sBooksService = restAdapter.create(BooksApiInterface.class);
-        //}
         return sBooksService;
     }
 
     public interface BooksApiInterface {
         @GET("/books/")
-        void listBook(Callback<List<Book>> response);
+        Observable<List<Book>> listBook();
 
         @GET("/books/{id}/")
-        void detailBook(@Path("id") int id,Callback<Book> response);
-
-
+        Observable<Book>  detailBook(
+                @Path("id") int id);
 
         @FormUrlEncoded 
         @POST("/books/") 
@@ -75,7 +72,8 @@ public class ApiClient {
         Observable<String> deleteBookById(@Path("id") int id);
 
 
-        @DELETE("/clean") void deleteAllBooks();
+        @DELETE("/clean") 
+        void deleteAllBooks();
     }
 
 }

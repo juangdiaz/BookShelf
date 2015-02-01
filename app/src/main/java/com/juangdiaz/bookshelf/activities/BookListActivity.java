@@ -18,6 +18,9 @@ import com.juangdiaz.bookshelf.fragments.BookDetailFragment;
 import com.juangdiaz.bookshelf.fragments.BookListFragment;
 import com.juangdiaz.bookshelf.model.Book;
 
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+
 
 public class BookListActivity extends ActionBarActivity implements BookListFragment.Callbacks {
 
@@ -26,6 +29,9 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
      * device.
      */
     private boolean mTwoPane;
+    private Book mSelectedBook;
+
+    private ProgressDialog loading;
 
 
 
@@ -35,10 +41,8 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
 
-        //Todo:investigate this for lollipop
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
-        //actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setIcon(R.drawable.ic_book);
 
@@ -66,26 +70,9 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
      */
     @Override
     public void onItemSelected(Book selectedItem) {
-        if (mTwoPane) {
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putInt(BookDetailActivity.ARG_BOOK_ID, selectedItem.getId()); // put selected item
-            BookDetailFragment fragment = new BookDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.book_detail_container, fragment)
-                    .commit();
 
-        } else {
-            // In single-pane mode, simply start the detail activity
-            // for the selected item ID.
-            Intent detailIntent = new Intent(this, BookDetailActivity.class);
-            detailIntent.putExtra(BookDetailActivity.ARG_BOOK_ID, selectedItem.getId());
-            startActivity(detailIntent);
-        }
-
+        showLoading();
+        downloadBookDataById(selectedItem.getId());
     }
 
 
@@ -129,15 +116,57 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
                          }
                      })
                      .show();
-             
-             
-           
-        //Set the addapter again
     }
 
     return super.onOptionsItemSelected(item);
     }
-    
-    
+
+    private void downloadBookDataById(int bookID) {
+        ApiClient.getsBooksApiClient().detailBook(bookID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Book>() {
+                    @Override public void onCompleted() {
+                    }
+
+
+                    @Override public void onError(Throwable e) {
+                        Toast.makeText(BookListActivity.this, "Failed to retrieve book",
+                                Toast.LENGTH_LONG).show();
+                        loading.dismiss();
+                    }
+                    @Override public void onNext(Book books) {
+                        mSelectedBook = books;
+
+                        if (mTwoPane) {
+                            // In two-pane mode, show the detail view in this activity by
+                            // adding or replacing the detail fragment using a
+                            // fragment transaction.
+                            Bundle arguments = new Bundle();
+                            arguments.putParcelable(BookDetailFragment.ARG_BOOK, mSelectedBook);// put selected item
+                            BookDetailFragment fragment = new BookDetailFragment();
+                            fragment.setArguments(arguments);
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.book_detail_container, fragment)
+                                    .commit();
+
+                        } else {
+                            // In single-pane mode, simply start the detail activity
+                            // for the selected item ID.
+                            Intent detailIntent = new Intent(getApplicationContext(), BookDetailActivity.class);
+                            detailIntent.putExtra(BookDetailFragment.ARG_BOOK, mSelectedBook);
+                            startActivity(detailIntent);
+                        }
+                        loading.dismiss();
+
+                    }
+                });
+    }
+
+    private void showLoading() {
+        loading = new ProgressDialog(this);
+        loading.setTitle("Loading");
+        loading.setMessage("Wait while loading...");
+        loading.show();
+    }
     
 }
