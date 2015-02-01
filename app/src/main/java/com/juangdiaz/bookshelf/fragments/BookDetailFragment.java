@@ -34,6 +34,9 @@ import com.juangdiaz.bookshelf.model.Book;
 
 import com.google.common.base.Strings;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import retrofit.Callback;
@@ -41,7 +44,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class BookDetailFragment extends Fragment  {
+public class BookDetailFragment extends Fragment {
 
 
     public static final String ARG_BOOK = "selected_book";
@@ -60,22 +63,22 @@ public class BookDetailFragment extends Fragment  {
 
     @InjectView(R.id.book_detail_title)
     TextView bookDetailTitle;
-    
+
     @InjectView(R.id.book_detail_author)
     TextView bookDetailAuthor;
-    
+
     @InjectView(R.id.book_detail_publisher)
     TextView bookDetailPublisher;
-    
+
     @InjectView(R.id.book_detail_categories)
     TextView bookDetailCategories;
-    
+
     @InjectView(R.id.book_detail_lastcheckout)
     TextView bookDetailLastCheckout;
-    
+
     @InjectView(R.id.book_detail_lastcheckoutby)
     TextView bookDetailLastCheckoutBy;
-    
+
     @InjectView(R.id.book_detail_checkout_button)
     Button checkoutButton;
 
@@ -118,7 +121,10 @@ public class BookDetailFragment extends Fragment  {
                 bookDetailCategories.setText(Html.fromHtml("Tags: " + mBook.getCategories()).toString());
             }
             if (!Strings.isNullOrEmpty(mBook.getLastCheckedOut())) {
-                bookDetailLastCheckout.setText(Html.fromHtml("Last Checkout: " + mBook.getLastCheckedOut()).toString());
+                //Format Date
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss zzz");
+                String formattedDateStr = dateFormat.format(mBook.getLastCheckedOut()); 
+                bookDetailLastCheckout.setText(Html.fromHtml("Last Checkout: @ " + formattedDateStr).toString());
             }
             if (!Strings.isNullOrEmpty(mBook.getLastCheckedOutBy())) {
                 bookDetailLastCheckoutBy.setText(Html.fromHtml(mBook.getLastCheckedOutBy()).toString());
@@ -127,8 +133,8 @@ public class BookDetailFragment extends Fragment  {
 
         //Get shared Preferences
         mSharedPreferences = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        
-        
+
+
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,7 +174,7 @@ public class BookDetailFragment extends Fragment  {
         if (id == android.R.id.home) {
             NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
             return true;
-        }else if (id == R.id.action_edit) {
+        } else if (id == R.id.action_edit) {
             // In single-pane mode, simply start the Edit activity
             // for the selected book ID.
             Intent editIntent = new Intent(getActivity(), BookEditActivity.class);
@@ -182,7 +188,7 @@ public class BookDetailFragment extends Fragment  {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_book_detail, menu);
-        super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
 
     }
 
@@ -196,9 +202,8 @@ public class BookDetailFragment extends Fragment  {
     }
 
 
-
     // Call to update the share intent
-    private Intent  setShareIntent() {
+    private Intent setShareIntent() {
 
         // create an Intent with the contents of the TextView
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -212,21 +217,19 @@ public class BookDetailFragment extends Fragment  {
     }
 
 
-
-
     public void updateCheckout() {
         //TODO: dialog asking for name
         getCheckoutNameDialog();
 
         // Read the user's name,
         // or an empty string if nothing found
-       
-    }
-    
-    
-    public void getCheckoutNameDialog(){
 
-        
+    }
+
+
+    public void getCheckoutNameDialog() {
+
+
         // Ask for their name
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle("Book Checkout!");
@@ -237,10 +240,10 @@ public class BookDetailFragment extends Fragment  {
 
         // Create EditText for entry
         final EditText input = new EditText(getActivity());
-        
-        if(checkoutBy != ""){
+
+        if (checkoutBy != "") {
             input.setText(checkoutBy);
-        }  
+        }
         alert.setView(input);
 
         // Make an "OK" button to save the name
@@ -255,39 +258,39 @@ public class BookDetailFragment extends Fragment  {
                 SharedPreferences.Editor e = mSharedPreferences.edit();
                 e.putString(PREF_NAME, inputName);
                 e.commit();
-                
+
                 //Call API
 
-                ApiClient.getsBooksApiClient().checkoutBook(mBook.getId(),inputName , new Callback<Book>() {
+                ApiClient.getsBooksApiClient().checkoutBook(mBook.getId(), inputName, new Callback<Book>() {
                     @Override
                     public void success(Book book, Response response) {
 
-                        Toast.makeText(getActivity(), "you have checked out the book: " + mBook.getTitle()
+                        Toast.makeText(getActivity(), "You have checked out the book: " + mBook.getTitle()
                                 , Toast.LENGTH_LONG).show();
+                        NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
-                        Toast.makeText(getActivity(), "There was an Issue Checking out this book"
+                        Toast.makeText(getActivity(), "There was an Issue Checking out this book, please try again later"
                                 , Toast.LENGTH_LONG).show();
 
                     }
                 });
 
-                }
+            }
         });
 
         // Make a "Cancel" button 
         // that simply dismisses the alert
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
-            public void onClick(DialogInterface dialog, int whichButton) {}
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
         });
 
         alert.show();
     }
 
-    
-    
 
 }

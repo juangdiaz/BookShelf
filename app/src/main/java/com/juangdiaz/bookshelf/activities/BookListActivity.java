@@ -36,7 +36,7 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
         actionBar.setDisplayShowHomeEnabled(true);
         //actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setIcon(R.drawable.ic_launcher);
+        actionBar.setIcon(R.drawable.ic_book);
 
              if (findViewById(R.id.book_detail_container) != null) {
             // The detail container view will be present only in the
