@@ -14,6 +14,8 @@ import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
 
+import rx.Observable;
+
 /**
  * Created by juangdiaz on 1/14/15.
  */
@@ -40,34 +42,39 @@ public class ApiClient {
         @GET("/books/{id}/")
         void detailBook(@Path("id") int id,Callback<Book> response);
 
-        @FormUrlEncoded
-        @POST("/books/")
-        Book createBook(
-                @Field("author") String author,
-                @Field("categories") String categories,
+
+
+        @FormUrlEncoded 
+        @POST("/books/") 
+        Observable<Book> createBook(
                 @Field("title") String title,
+                @Field("author") String author,
                 @Field("publisher") String publisher,
-                @Field("lastCheckedOutBy") String lastCheckedOutBy
-        );
-
+                @Field("categories") String categories,
+                @Field("lastCheckedOutBy") String lastCheckedOutBy);
 
         @FormUrlEncoded
-        @PUT("/books/{id}")
-        void checkoutBook(
+        @POST("/books/{id}")
+        Observable<Book> updateBook(
                 @Path("id") int id,
-                @Field("lastCheckedOutBy") String checkOutBy,
-                Callback<Book> response
-        );
+                @Field("title") String title,
+                @Field("author") String author,
+                @Field("publisher") String publisher,
+                @Field("categories") String categories);
+
+        
+        @FormUrlEncoded 
+        @PUT("/books/{id}") 
+        Observable<Book> checkoutBook(
+                @Path("id") int id,
+                @Field("lastCheckedOutBy") String lastCheckedOutBy);
 
 
-        @DELETE("/books/{id}/")
-        void deleteBookById(@Path("id") int id);
+        @DELETE("/books/{id}/") 
+        Observable<String> deleteBookById(@Path("id") int id);
 
 
-        @DELETE("/clean/")
-        void deleteAllBooks(Callback<List<Book>> response);
-
-
+        @DELETE("/clean") void deleteAllBooks();
     }
 
 }

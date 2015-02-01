@@ -2,6 +2,7 @@ package com.juangdiaz.bookshelf.fragments;
 
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -42,6 +43,8 @@ import butterknife.InjectView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 
 
 public class BookDetailFragment extends Fragment {
@@ -55,6 +58,9 @@ public class BookDetailFragment extends Fragment {
 
     private static final String PREFS = "prefs";
     private static final String PREF_NAME = "name";
+
+
+    private ProgressDialog loading;
 
 
     // Access the device's key-value storage
@@ -75,9 +81,6 @@ public class BookDetailFragment extends Fragment {
 
     @InjectView(R.id.book_detail_lastcheckout)
     TextView bookDetailLastCheckout;
-
-    @InjectView(R.id.book_detail_lastcheckoutby)
-    TextView bookDetailLastCheckoutBy;
 
     @InjectView(R.id.book_detail_checkout_button)
     Button checkoutButton;
@@ -121,13 +124,7 @@ public class BookDetailFragment extends Fragment {
                 bookDetailCategories.setText(Html.fromHtml("Tags: " + mBook.getCategories()).toString());
             }
             if (!Strings.isNullOrEmpty(mBook.getLastCheckedOut())) {
-                //Format Date
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss zzz");
-                String formattedDateStr = dateFormat.format(mBook.getLastCheckedOut()); 
-                bookDetailLastCheckout.setText(Html.fromHtml("Last Checkout: @ " + formattedDateStr).toString());
-            }
-            if (!Strings.isNullOrEmpty(mBook.getLastCheckedOutBy())) {
-                bookDetailLastCheckoutBy.setText(Html.fromHtml(mBook.getLastCheckedOutBy()).toString());
+                bookDetailLastCheckout.setText(Html.fromHtml(mBook.getLastCheckedOutBy() + " @ " + mBook.lastCheckedOutFormattedDate()).toString());
             }
         }
 
@@ -181,6 +178,28 @@ public class BookDetailFragment extends Fragment {
             editIntent.putExtra(BookEditFragment.ARG_ITEM, mBook);
             startActivity(editIntent);
 
+        } else if (id == R.id.action_delete_book) {
+            ApiClient.getsBooksApiClient().deleteBookById(mBook.getId())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<String>() {
+                        @Override public void onCompleted() {
+                            NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
+
+                        }
+
+
+                        @Override public void onError(Throwable e) {
+                            Toast.makeText(getActivity(), "Failed to delete book.",
+                                    Toast.LENGTH_LONG).show();
+                        }
+
+
+                        @Override public void onNext(String s) {
+                            Toast.makeText(getActivity(), "Book deleted!",
+                                    Toast.LENGTH_LONG).show();
+                            
+                        }
+                    });
         }
         return super.onOptionsItemSelected(item);
     }
@@ -218,7 +237,6 @@ public class BookDetailFragment extends Fragment {
 
 
     public void updateCheckout() {
-        //TODO: dialog asking for name
         getCheckoutNameDialog();
 
         // Read the user's name,
@@ -259,28 +277,35 @@ public class BookDetailFragment extends Fragment {
                 e.putString(PREF_NAME, inputName);
                 e.commit();
 
+                showLoading();
                 //Call API
+                ApiClient.getsBooksApiClient().checkoutBook(mBook.getId(), inputName)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<Book>() {
+                            @Override
+                            public void onCompleted() {
+                                loading.dismiss();
+                                NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
+                                
+                            }
 
-                ApiClient.getsBooksApiClient().checkoutBook(mBook.getId(), inputName, new Callback<Book>() {
-                    @Override
-                    public void success(Book book, Response response) {
 
-                        Toast.makeText(getActivity(), "You have checked out the book: " + mBook.getTitle()
-                                , Toast.LENGTH_LONG).show();
-                        NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
-                    }
+                            @Override
+                            public void onError(Throwable e) {
+                                Toast.makeText(getActivity(), "There was an Issue Checking out this book, please try again later"
+                                        , Toast.LENGTH_LONG).show();
+                                loading.dismiss();
+                            }
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Toast.makeText(getActivity(), "There was an Issue Checking out this book, please try again later"
-                                , Toast.LENGTH_LONG).show();
 
-                    }
-                });
-
-            }
+                            @Override
+                            public void onNext(Book book) {
+                                Toast.makeText(getActivity(), "You have checked out the book: " + mBook.getTitle()
+                                        , Toast.LENGTH_LONG).show();
+                            }
+                        });
+        }
         });
-
         // Make a "Cancel" button 
         // that simply dismisses the alert
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -291,6 +316,13 @@ public class BookDetailFragment extends Fragment {
 
         alert.show();
     }
+
+        private void showLoading() {
+            loading = new ProgressDialog(getActivity());
+            loading.setTitle("Loading");
+            loading.setMessage("Wait while loading...");
+            loading.show();
+        }
 
 
 }

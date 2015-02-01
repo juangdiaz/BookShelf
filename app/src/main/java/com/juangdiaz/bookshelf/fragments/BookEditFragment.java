@@ -2,8 +2,11 @@ package com.juangdiaz.bookshelf.fragments;
 
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
@@ -20,10 +23,13 @@ import android.widget.TextView;
 import com.google.common.base.Strings;
 import com.juangdiaz.bookshelf.R;
 import com.juangdiaz.bookshelf.activities.BookListActivity;
+import com.juangdiaz.bookshelf.data.ApiClient;
 import com.juangdiaz.bookshelf.model.Book;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +41,19 @@ public class BookEditFragment extends Fragment {
     private static final String SAVED_LAST_TITLE = "last_title";
 
     private Book mBook; // the selected item
+    
+    private ProgressDialog loading;
+
+
+    private static final String PREFS = "prefs";
+    private static final String PREF_NAME = "name";
+
+
+
+
+    // Access the device's key-value storage
+    SharedPreferences mSharedPreferences;
+
 
     @InjectView(R.id.book_edit_title)
     EditText bookEditTitle;
@@ -47,6 +66,9 @@ public class BookEditFragment extends Fragment {
 
     @InjectView(R.id.book_edit_categories)
     EditText bookEditCategories;
+
+    @InjectView(R.id.book_edit_checkoutby)
+    EditText bookEditCheckOutBy;
 
     @InjectView(R.id.book_edit_submit)
     Button submitButton;
@@ -77,6 +99,10 @@ public class BookEditFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_book_edit, container, false);
         ButterKnife.inject(this, rootView);
+        //Get shared Preferences
+        mSharedPreferences = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+
+        String checkoutBy = mSharedPreferences.getString(PREF_NAME, "");
 
         // Show the content.
         if (mBook != null) {
@@ -97,7 +123,18 @@ public class BookEditFragment extends Fragment {
                 bookEditCategories.setHint("");
                 bookEditCategories.setText(Html.fromHtml(mBook.getCategories()).toString());
             }
+            if (!Strings.isNullOrEmpty(mBook.getLastCheckedOutBy())) {
+                bookEditCheckOutBy.setHint("");
+                bookEditCheckOutBy.setText(Html.fromHtml(mBook.getLastCheckedOutBy()).toString());
+            }
+
+            
+            
+            
         } else {
+
+            bookEditCheckOutBy.setHint("");
+            bookEditCheckOutBy.setText(checkoutBy);
 
         }
 
@@ -171,7 +208,8 @@ public class BookEditFragment extends Fragment {
         if (isEmpty(bookEditTitle) ||
             isEmpty(bookEditAuthor) ||
             isEmpty(bookEditPublisher) ||
-            isEmpty(bookEditCategories)) {
+            isEmpty(bookEditCategories) ||
+            isEmpty(bookEditCheckOutBy)){
             
             AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
             alert.setMessage("All Fields are required");
@@ -179,7 +217,6 @@ public class BookEditFragment extends Fragment {
             alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
                 public void onClick(DialogInterface dialog, int whichButton) {
-
                     return;
                 }
             });
@@ -187,7 +224,120 @@ public class BookEditFragment extends Fragment {
         }
         
         //Save info to API
+        submitBookToAPI();
+    }
+    
+    private void submitBookToAPI(){
+        
+        
+        String title = bookEditTitle.getText().toString();
+        String author = bookEditAuthor.getText().toString();
+        String publisher = bookEditPublisher.getText().toString();
+        String categories = bookEditCategories.getText().toString();
+        String checkOutBy = bookEditCheckOutBy.getText().toString();
+        if (mBook != null){
+            //Edit Book
 
+            ApiClient.getsBooksApiClient().updateBook(
+                    mBook.getId(),
+                    title,
+                    author,
+                    publisher,
+                    categories
+            )
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<Book>() {
+                        @Override public void onCompleted() {
+                            // dialog.dismiss();
+                        }
+
+
+                        @Override public void onError(Throwable e) {
+                            // dialog.dismiss();
+
+
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("Error")
+                                    .setMessage("Failed to Edit book!")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            //  dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+                        }
+
+
+                        @Override public void onNext(Book book) {
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("Message")
+                                    .setMessage("Book successfully Updated!")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
+
+                                        }
+                                    })
+                                    .show();
+                        }
+                    });
+
+        }
+        else {
+            //Add new Book
+            ApiClient.getsBooksApiClient().createBook(
+                    title,
+                    author,
+                    publisher,
+                    categories,
+                    checkOutBy
+            )
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<Book>() {
+                        @Override public void onCompleted() {
+                           // dialog.dismiss();
+                        }
+
+
+                        @Override public void onError(Throwable e) {
+                           // dialog.dismiss();
+
+
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("Error")
+                                    .setMessage("Failed to create book!")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                          //  dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+                        }
+
+
+                        @Override public void onNext(Book book) {
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("Message")
+                                    .setMessage("Book successfully created!")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
+                                        }
+                                    })
+                                    .show();
+                        }
+                    });
+
+
+
+
+        }
+        
+        
     }
 
     //Check for empty EditText Fields

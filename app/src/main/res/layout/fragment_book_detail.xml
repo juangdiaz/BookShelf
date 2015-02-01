@@ -37,18 +37,18 @@
         android:text="Tags" />
 
     <TextView
+        style="@style/BookDetailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last Checkout: " />
+    
+    <TextView
         android:id="@+id/book_detail_lastcheckout"
         style="@style/BookDetailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Last Checkout" />
-    
-    <TextView
-        android:id="@+id/book_detail_lastcheckoutby"
-        style="@style/BookDetailText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
          />
+
 
     <Button
         android:layout_width="fill_parent"

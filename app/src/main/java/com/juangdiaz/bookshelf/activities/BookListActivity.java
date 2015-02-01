@@ -1,15 +1,19 @@
 package com.juangdiaz.bookshelf.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import com.juangdiaz.bookshelf.R;
+import com.juangdiaz.bookshelf.data.ApiClient;
 import com.juangdiaz.bookshelf.fragments.BookDetailFragment;
 import com.juangdiaz.bookshelf.fragments.BookListFragment;
 import com.juangdiaz.bookshelf.model.Book;
@@ -106,9 +110,32 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
             // for the selected item ID.
             Intent createIntent = new Intent(this, BookEditActivity.class);
             startActivity(createIntent);
-        }
+        } else if (id == R.id.action_delete_all) {
+             new AlertDialog.Builder(this)
+                     .setTitle("Warning")
+                     .setMessage("Are you sure you want to delete all the books?")
+                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                         @Override
+                         public void onClick(DialogInterface dialog, int which) {
 
-        return super.onOptionsItemSelected(item);
+                             ApiClient.getsBooksApiClient().deleteAllBooks();
+                             Toast.makeText(getApplicationContext() , "All books have been deleted!", Toast.LENGTH_LONG).show();
+                               dialog.dismiss();
+                         }
+                     })
+                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                         @Override public void onClick(DialogInterface dialog, int which) {
+                             dialog.dismiss();
+                         }
+                     })
+                     .show();
+             
+             
+           
+        //Set the addapter again
+    }
+
+    return super.onOptionsItemSelected(item);
     }
     
     

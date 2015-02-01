@@ -2,6 +2,10 @@ package com.juangdiaz.bookshelf.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by juangdiaz on 1/13/15.
@@ -124,4 +128,19 @@ public class Book implements Parcelable {
         title = in.readString();
         url = in.readString();
     }
+
+    public String lastCheckedOutFormattedDate() {
+        if (getLastCheckedOut() == null)
+            return null;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date result = df.parse(getLastCheckedOut());
+            return DateFormat.getDateTimeInstance().format(result);
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+
+
 }
