@@ -39,10 +39,6 @@ public class BookListFragment extends Fragment implements AbsListView.OnItemClic
     
     @InjectView(R.id.list_view)
     ListView mListView;
-    
-    @InjectView(R.id.list_progressbar)
-    ProgressBar mProgressBar;
-
 
     
     ListAdapter mListAdapter;
