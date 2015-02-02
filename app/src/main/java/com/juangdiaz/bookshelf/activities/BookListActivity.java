@@ -33,9 +33,6 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
 
     private ProgressDialog loading;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +67,6 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
      */
     @Override
     public void onItemSelected(Book selectedItem) {
-
         showLoading();
         downloadBookDataById(selectedItem.getId());
     }
@@ -128,12 +124,12 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
                     @Override public void onCompleted() {
                     }
 
-
                     @Override public void onError(Throwable e) {
                         Toast.makeText(BookListActivity.this, "Failed to retrieve book",
                                 Toast.LENGTH_LONG).show();
                         loading.dismiss();
                     }
+                    
                     @Override public void onNext(Book books) {
                         mSelectedBook = books;
 
@@ -157,7 +153,6 @@ public class BookListActivity extends ActionBarActivity implements BookListFragm
                             startActivity(detailIntent);
                         }
                         loading.dismiss();
-
                     }
                 });
     }

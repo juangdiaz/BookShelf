@@ -38,18 +38,13 @@ import rx.android.schedulers.AndroidSchedulers;
 public class BookEditFragment extends Fragment {
 
     public static final String ARG_ITEM = "selected_book_id";
-
     private static final String SAVED_LAST_TITLE = "last_title";
-
-    private Book mBook; // the selected item
-    
-    private ProgressDialog loading;
 
 
     private static final String PREFS = "prefs";
     private static final String PREF_NAME = "name";
 
-
+    private Book mBook; // the selected item
     private boolean mTwoPane;
 
     // Access the device's key-value storage
@@ -143,8 +138,6 @@ public class BookEditFragment extends Fragment {
                 submitBook();
             }
         });
-
-
         return rootView;
     }
 
@@ -180,9 +173,6 @@ public class BookEditFragment extends Fragment {
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle("Are you sure?");
         alert.setMessage("Do you want to continue without saving?");
-
-
-        // Make an "OK" to exit
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -196,8 +186,6 @@ public class BookEditFragment extends Fragment {
             }
         });
 
-        // Make a "Cancel" button
-        // that simply dismisses the alert
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -224,15 +212,14 @@ public class BookEditFragment extends Fragment {
                 }
             });
             alert.show();
+        } else {
+
+            //Save info to API
+            submitBookToAPI();
         }
-        
-        //Save info to API
-        submitBookToAPI();
     }
     
     private void submitBookToAPI(){
-        
-        
         String title = bookEditTitle.getText().toString();
         String author = bookEditAuthor.getText().toString();
         String publisher = bookEditPublisher.getText().toString();
@@ -251,14 +238,10 @@ public class BookEditFragment extends Fragment {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<Book>() {
                         @Override public void onCompleted() {
-                            // dialog.dismiss();
                         }
 
 
                         @Override public void onError(Throwable e) {
-                            // dialog.dismiss();
-
-
                             new AlertDialog.Builder(getActivity())
                                     .setTitle("Error")
                                     .setMessage("Failed to Edit book!")
@@ -299,21 +282,16 @@ public class BookEditFragment extends Fragment {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<Book>() {
                         @Override public void onCompleted() {
-                           // dialog.dismiss();
                         }
 
 
                         @Override public void onError(Throwable e) {
-                           // dialog.dismiss();
-
-
                             new AlertDialog.Builder(getActivity())
                                     .setTitle("Error")
                                     .setMessage("Failed to create book!")
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                          //  dialog.dismiss();
                                         }
                                     })
                                     .show();
@@ -336,10 +314,6 @@ public class BookEditFragment extends Fragment {
                                         }
                                     })
                                     .show();
-                            
-                            
-                            
-                            
                         }
                     });
 

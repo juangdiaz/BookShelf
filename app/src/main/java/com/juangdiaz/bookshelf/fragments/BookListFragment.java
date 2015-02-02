@@ -40,7 +40,6 @@ public class BookListFragment extends Fragment implements AbsListView.OnItemClic
     @InjectView(R.id.list_view)
     ListView mListView;
 
-    
     ListAdapter mListAdapter;
     private List<Book> streamBookData = new ArrayList<>();
 
@@ -114,12 +113,9 @@ public class BookListFragment extends Fragment implements AbsListView.OnItemClic
     }
 
     public void updateDisplay(){
-
         mListAdapter = new ListAdapter(getActivity(),0,streamBookData);
         mListView.setAdapter(mListAdapter);
-
         mListView.setOnItemClickListener(this);
-
     }
 
 
@@ -130,7 +126,6 @@ public class BookListFragment extends Fragment implements AbsListView.OnItemClic
         if (!(activity instanceof Callbacks)) {
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
         }
-
         mCallbacks = (Callbacks) activity;
     }
 

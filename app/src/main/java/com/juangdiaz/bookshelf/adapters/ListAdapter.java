@@ -12,6 +12,8 @@ import com.juangdiaz.bookshelf.model.Book;
 
 import java.util.List;
 
+import butterknife.InjectView;
+
 /**
  * Created by juangdiaz on 1/14/15.
  */
@@ -20,8 +22,6 @@ public class ListAdapter extends ArrayAdapter<Book> {
 
     private final LayoutInflater mLayoutInflater;
     private Context mContext;
-    
-    
     
     public ListAdapter(final Context context, int textViewResourceId, List<Book> objects) {
         super(context, textViewResourceId,objects);
@@ -38,7 +38,6 @@ public class ListAdapter extends ArrayAdapter<Book> {
 
             row = mLayoutInflater.inflate(R.layout.book_list, parent, false);
             holder = new BooksViewHolder(row);
-
             row.setTag(holder);
         }
         else {
@@ -46,10 +45,10 @@ public class ListAdapter extends ArrayAdapter<Book> {
         }
 
 
-        Book temp = getItem(position);
+        Book book = getItem(position);
 
-        holder.txtBookTitle.setText(temp.getTitle());
-        holder.txtBookAuthors.setText(temp.getAuthor());
+        holder.txtBookTitle.setText(book.getTitle());
+        holder.txtBookAuthors.setText(book.getAuthor());
 
         return row;
     }

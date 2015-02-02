@@ -51,16 +51,13 @@ public class BookDetailFragment extends Fragment {
 
 
     public static final String ARG_BOOK = "selected_book";
-
     private static final String SAVED_LAST_TITLE = "last_title";
 
-    private Book mBook; // the selected item
-
+    private Book mBook; // selected book
+    private boolean mTwoPane;
+    
     private static final String PREFS = "prefs";
     private static final String PREF_NAME = "name";
-
-
-    private boolean mTwoPane;
 
     private ProgressDialog loading;
 
@@ -251,22 +248,12 @@ public class BookDetailFragment extends Fragment {
 
 
     public void updateCheckout() {
-        getCheckoutNameDialog();
-
-        // Read the user's name,
-        // or an empty string if nothing found
-
-    }
 
 
-    public void getCheckoutNameDialog() {
-
-
-        // Ask for their name
+        // Dialog Alert for Users name
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle("Book Checkout!");
         alert.setMessage("What is your name?");
-
 
         String checkoutBy = mSharedPreferences.getString(PREF_NAME, "");
 
