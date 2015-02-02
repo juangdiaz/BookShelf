@@ -14,6 +14,7 @@ Libraries
 *  [RetroFit](http://square.github.io/retrofit/) Type-safe REST client
 *  [okhttp](http://square.github.io/okhttp/) An HTTP & SPDY client
 *  [guava](https://github.com/google/guava) Google Core Libraries for Java
+*  [Float Labeled EditText](https://github.com/wrapp/floatlabelededittext) Simple implementation of a Float Labeled EditText
 
 Images
 =======

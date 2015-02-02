@@ -105,29 +105,24 @@ public class BookEditFragment extends Fragment {
         if (mBook != null) {
             if (!Strings.isNullOrEmpty(mBook.getTitle())) {
                 ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(Html.fromHtml(mBook.getTitle()).toString()); // title in the action bar
-                bookEditTitle.setHint("");
                 bookEditTitle.setText(Html.fromHtml(mBook.getTitle()).toString());
             }
             if (!Strings.isNullOrEmpty(mBook.getAuthor())) {
-                bookEditAuthor.setHint("");
                 bookEditAuthor.setText(Html.fromHtml(mBook.getAuthor()).toString());
             }
             if (!Strings.isNullOrEmpty(mBook.getPublisher())) {
-                bookEditPublisher.setHint("");
                 bookEditPublisher.setText(Html.fromHtml(mBook.getPublisher()).toString());
             }
             if (!Strings.isNullOrEmpty(mBook.getCategories())) {
-                bookEditCategories.setHint("");
                 bookEditCategories.setText(Html.fromHtml(mBook.getCategories()).toString());
             }
             if (!Strings.isNullOrEmpty(mBook.getLastCheckedOutBy())) {
-                bookEditCheckOutBy.setHint("");
+
                 bookEditCheckOutBy.setText(Html.fromHtml(mBook.getLastCheckedOutBy()).toString());
             }
             
         } else {
             if (!Strings.isNullOrEmpty(checkoutBy)) {
-                bookEditCheckOutBy.setHint("");
                 bookEditCheckOutBy.setText(checkoutBy);
             }
         }

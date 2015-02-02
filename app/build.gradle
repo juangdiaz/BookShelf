@@ -35,5 +35,6 @@ dependencies {
     compile 'com.google.guava:guava:17.+'    
     compile 'com.netflix.rxjava:rxjava-core:0.20.6'
     compile 'com.netflix.rxjava:rxjava-android:0.20.6'
+    compile 'com.wrapp.floatlabelededittext:library:0.0.6'
 
 }

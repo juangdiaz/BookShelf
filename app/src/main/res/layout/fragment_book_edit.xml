@@ -10,34 +10,58 @@
     tools:context=".BookEditFragment">
 
 
-    <EditText
-        android:id="@+id/book_edit_title"
+    <com.wrapp.floatlabelededittext.FloatLabeledEditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/book_title_edit" />
+        android:layout_height="wrap_content">
 
+        <EditText
+            android:id="@+id/book_edit_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/book_title_edit" />
+    </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+
+    <com.wrapp.floatlabelededittext.FloatLabeledEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
         android:id="@+id/book_edit_author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/book_author_edit" />
-    
+    </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+
+    <com.wrapp.floatlabelededittext.FloatLabeledEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
         android:id="@+id/book_edit_publisher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/book_publisher_edit" />
-    
+    </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+    <com.wrapp.floatlabelededittext.FloatLabeledEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
         android:id="@+id/book_edit_categories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/book_categories_edit" />   
+        android:hint="@string/book_categories_edit" />
+    </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+    <com.wrapp.floatlabelededittext.FloatLabeledEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
         android:id="@+id/book_edit_checkoutby"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/book_checkoutby_edit" />
+    </com.wrapp.floatlabelededittext.FloatLabeledEditText>
     
     <Button
         android:layout_width="fill_parent"
