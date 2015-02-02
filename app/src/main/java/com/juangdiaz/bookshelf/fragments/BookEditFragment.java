@@ -131,8 +131,10 @@ public class BookEditFragment extends Fragment {
             }
             
         } else {
-            bookEditCheckOutBy.setHint("");
-            bookEditCheckOutBy.setText(checkoutBy);
+            if (!Strings.isNullOrEmpty(checkoutBy)) {
+                bookEditCheckOutBy.setHint("");
+                bookEditCheckOutBy.setText(checkoutBy);
+            }
         }
         
         submitButton.setOnClickListener(new View.OnClickListener() {
