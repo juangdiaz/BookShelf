@@ -49,8 +49,7 @@ public class ApiClient {
                 @Field("title") String title,
                 @Field("author") String author,
                 @Field("publisher") String publisher,
-                @Field("categories") String categories,
-                @Field("lastCheckedOutBy") String lastCheckedOutBy);
+                @Field("categories") String categories);
 
 
         @PUT("/books/{id}/")

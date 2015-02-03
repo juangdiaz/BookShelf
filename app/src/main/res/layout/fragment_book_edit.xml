@@ -53,16 +53,6 @@
         android:hint="@string/book_categories_edit" />
     </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
-    <com.wrapp.floatlabelededittext.FloatLabeledEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <EditText
-        android:id="@+id/book_edit_checkoutby"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/book_checkoutby_edit" />
-    </com.wrapp.floatlabelededittext.FloatLabeledEditText>
-    
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

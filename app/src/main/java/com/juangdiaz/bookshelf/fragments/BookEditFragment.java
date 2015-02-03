@@ -63,9 +63,6 @@ public class BookEditFragment extends Fragment {
     @InjectView(R.id.book_edit_categories)
     EditText bookEditCategories;
 
-    @InjectView(R.id.book_edit_checkoutby)
-    EditText bookEditCheckOutBy;
-
     @InjectView(R.id.book_edit_submit)
     Button submitButton;
 
@@ -115,15 +112,6 @@ public class BookEditFragment extends Fragment {
             }
             if (!Strings.isNullOrEmpty(mBook.getCategories())) {
                 bookEditCategories.setText(Html.fromHtml(mBook.getCategories()).toString());
-            }
-            if (!Strings.isNullOrEmpty(mBook.getLastCheckedOutBy())) {
-
-                bookEditCheckOutBy.setText(Html.fromHtml(mBook.getLastCheckedOutBy()).toString());
-            }
-
-        } else {
-            if (!Strings.isNullOrEmpty(checkoutBy)) {
-                bookEditCheckOutBy.setText(checkoutBy);
             }
         }
 
@@ -194,8 +182,7 @@ public class BookEditFragment extends Fragment {
         if (isEmpty(bookEditTitle) ||
                 isEmpty(bookEditAuthor) ||
                 isEmpty(bookEditPublisher) ||
-                isEmpty(bookEditCategories) ||
-                isEmpty(bookEditCheckOutBy)) {
+                isEmpty(bookEditCategories)) {
 
             AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
             alert.setMessage("All Fields are required");
@@ -219,7 +206,6 @@ public class BookEditFragment extends Fragment {
         String author = bookEditAuthor.getText().toString();
         String publisher = bookEditPublisher.getText().toString();
         String categories = bookEditCategories.getText().toString();
-        String checkOutBy = bookEditCheckOutBy.getText().toString();
         if (mBook != null) {
             //Edit Book
 
@@ -230,7 +216,6 @@ public class BookEditFragment extends Fragment {
             bookUpdate.setAuthor(bookEditAuthor.getText().toString());
             bookUpdate.setPublisher(bookEditPublisher.getText().toString());
             bookUpdate.setCategories(bookEditCategories.getText().toString());
-            bookUpdate.setLastCheckedOutBy(bookEditCheckOutBy.getText().toString());
 
             
             ApiClient.getsBooksApiClient().updateBook(
@@ -280,8 +265,7 @@ public class BookEditFragment extends Fragment {
                     title,
                     author,
                     publisher,
-                    categories,
-                    checkOutBy
+                    categories
             )
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<Book>() {
