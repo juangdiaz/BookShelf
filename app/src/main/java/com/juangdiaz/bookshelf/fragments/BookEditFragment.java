@@ -79,16 +79,16 @@ public class BookEditFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
-        
+
         if (getActivity().findViewById(R.id.book_detail_container) != null) {
             mTwoPane = true;
         }
-        
+
         if (getArguments() != null) { //edit
             if (getArguments().containsKey(ARG_ITEM)) {
                 mBook = getArguments().getParcelable(ARG_ITEM); // get item from bundle
             }
-        } 
+        }
     }
 
     @Override
@@ -120,13 +120,13 @@ public class BookEditFragment extends Fragment {
 
                 bookEditCheckOutBy.setText(Html.fromHtml(mBook.getLastCheckedOutBy()).toString());
             }
-            
+
         } else {
             if (!Strings.isNullOrEmpty(checkoutBy)) {
                 bookEditCheckOutBy.setText(checkoutBy);
             }
         }
-        
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,7 +172,7 @@ public class BookEditFragment extends Fragment {
 
             public void onClick(DialogInterface dialog, int whichButton) {
 
-                if(mTwoPane) {
+                if (mTwoPane) {
                     Intent listIntent = new Intent(getActivity(), BookListActivity.class);
                     startActivity(listIntent);
                 } else {
@@ -192,11 +192,11 @@ public class BookEditFragment extends Fragment {
     private void submitBook() {
 
         if (isEmpty(bookEditTitle) ||
-            isEmpty(bookEditAuthor) ||
-            isEmpty(bookEditPublisher) ||
-            isEmpty(bookEditCategories) ||
-            isEmpty(bookEditCheckOutBy)){
-            
+                isEmpty(bookEditAuthor) ||
+                isEmpty(bookEditPublisher) ||
+                isEmpty(bookEditCategories) ||
+                isEmpty(bookEditCheckOutBy)) {
+
             AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
             alert.setMessage("All Fields are required");
 
@@ -213,30 +213,39 @@ public class BookEditFragment extends Fragment {
             submitBookToAPI();
         }
     }
-    
-    private void submitBookToAPI(){
+
+    private void submitBookToAPI() {
         String title = bookEditTitle.getText().toString();
         String author = bookEditAuthor.getText().toString();
         String publisher = bookEditPublisher.getText().toString();
         String categories = bookEditCategories.getText().toString();
         String checkOutBy = bookEditCheckOutBy.getText().toString();
-        if (mBook != null){
+        if (mBook != null) {
             //Edit Book
 
+
+            Book bookUpdate = new Book();
+            bookUpdate.setId(mBook.getId());
+            bookUpdate.setTitle(bookEditTitle.getText().toString());
+            bookUpdate.setAuthor(bookEditAuthor.getText().toString());
+            bookUpdate.setPublisher(bookEditPublisher.getText().toString());
+            bookUpdate.setCategories(bookEditCategories.getText().toString());
+            bookUpdate.setLastCheckedOutBy(bookEditCheckOutBy.getText().toString());
+
+            
             ApiClient.getsBooksApiClient().updateBook(
                     mBook.getId(),
-                    title,
-                    author,
-                    publisher,
-                    categories
+                    bookUpdate
             )
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<Book>() {
-                        @Override public void onCompleted() {
+                        @Override
+                        public void onCompleted() {
                         }
 
 
-                        @Override public void onError(Throwable e) {
+                        @Override
+                        public void onError(Throwable e) {
                             new AlertDialog.Builder(getActivity())
                                     .setTitle("Error")
                                     .setMessage("Failed to Edit book!")
@@ -250,22 +259,22 @@ public class BookEditFragment extends Fragment {
                         }
 
 
-                        @Override public void onNext(Book book) {
+                        @Override
+                        public void onNext(Book book) {
                             Toast.makeText(getActivity(), "Book successfully Updated!"
                                     , Toast.LENGTH_LONG).show();
-                            if(mTwoPane) {
+                            if (mTwoPane) {
                                 Intent listIntent = new Intent(getActivity(), BookListActivity.class);
                                 startActivity(listIntent);
                             } else {
                                 NavUtils.navigateUpTo(getActivity(), new Intent(getActivity(), BookListActivity.class));
                             }
-                            
-                            
+
+
                         }
                     });
 
-        }
-        else {
+        } else {
             //Add new Book
             ApiClient.getsBooksApiClient().createBook(
                     title,
@@ -276,11 +285,13 @@ public class BookEditFragment extends Fragment {
             )
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<Book>() {
-                        @Override public void onCompleted() {
+                        @Override
+                        public void onCompleted() {
                         }
 
 
-                        @Override public void onError(Throwable e) {
+                        @Override
+                        public void onError(Throwable e) {
                             new AlertDialog.Builder(getActivity())
                                     .setTitle("Error")
                                     .setMessage("Failed to create book!")
@@ -293,14 +304,15 @@ public class BookEditFragment extends Fragment {
                         }
 
 
-                        @Override public void onNext(Book book) {
+                        @Override
+                        public void onNext(Book book) {
                             new AlertDialog.Builder(getActivity())
                                     .setTitle("Message")
                                     .setMessage("Book successfully created!")
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(mTwoPane) {
+                                            if (mTwoPane) {
                                                 Intent listIntent = new Intent(getActivity(), BookListActivity.class);
                                                 startActivity(listIntent);
                                             } else {
@@ -313,11 +325,9 @@ public class BookEditFragment extends Fragment {
                     });
 
 
-
-
         }
-        
-        
+
+
     }
 
     //Check for empty EditText Fields

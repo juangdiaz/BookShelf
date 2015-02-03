@@ -6,6 +6,7 @@ import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.http.Body;
 import retrofit.http.DELETE;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
@@ -51,18 +52,13 @@ public class ApiClient {
                 @Field("categories") String categories,
                 @Field("lastCheckedOutBy") String lastCheckedOutBy);
 
-        @FormUrlEncoded
-        @POST("/books/{id}")
-        Observable<Book> updateBook(
-                @Path("id") int id,
-                @Field("title") String title,
-                @Field("author") String author,
-                @Field("publisher") String publisher,
-                @Field("categories") String categories);
+
+        @PUT("/books/{id}/")
+        Observable<Book> updateBook(@Path("id") int id, @Body Book book);
 
         
         @FormUrlEncoded
-        @PUT("/books/{id}") 
+        @PUT("/books/{id}/")
         Observable<Book> checkoutBook(
                 @Path("id") int id,
                 @Field("lastCheckedOutBy") String lastCheckedOutBy);

@@ -142,9 +142,6 @@ public class BookDetailFragment extends Fragment {
                 }
             });
         }
-
-        
-
         return rootView;
     }
 
@@ -280,7 +277,8 @@ public class BookDetailFragment extends Fragment {
 
                 showLoading();
                 //Call API
-                ApiClient.getsBooksApiClient().checkoutBook(mBook.getId(), inputName)
+                mBook.setLastCheckedOutBy(inputName);
+                ApiClient.getsBooksApiClient().checkoutBook(mBook.getId(), mBook.getLastCheckedOutBy())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Subscriber<Book>() {
                             @Override
