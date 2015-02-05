@@ -91,7 +91,7 @@ public class BookListFragment extends Fragment implements AbsListView.OnItemClic
                     @Override
                     public void run() {
 
-                        showLoading();
+                        //check for new Data
                         downloadData();
                         swipeRefreshLayout.setRefreshing(false);
                     }
