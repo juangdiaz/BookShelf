@@ -15,6 +15,7 @@ Libraries
 *  [okhttp](http://square.github.io/okhttp/) An HTTP & SPDY client
 *  [guava](https://github.com/google/guava) Google Core Libraries for Java
 *  [Float Labeled EditText](https://github.com/wrapp/floatlabelededittext) Simple implementation of a Float Labeled EditText
+*  [Swipe Refresh Layout](https://developer.android.com/reference/android/support/v4/widget/SwipeRefreshLayout.html) Refresh the contents of a view via a vertical swipe gesture.
 
 Images
 =======
