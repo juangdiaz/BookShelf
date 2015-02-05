@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +38,7 @@ public class BookListFragment extends Fragment implements AbsListView.OnItemClic
 
 
     private ProgressDialog loading;
+    private SwipeRefreshLayout swipeRefreshLayout;
     
     @InjectView(R.id.list_view)
     ListView mListView;
@@ -65,6 +68,7 @@ public class BookListFragment extends Fragment implements AbsListView.OnItemClic
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_book_list, container, false);
         ButterKnife.inject(this, view);
+        
         return view;
     }
     @Override
@@ -74,6 +78,27 @@ public class BookListFragment extends Fragment implements AbsListView.OnItemClic
         if (mListAdapter == null) {
             mListAdapter = new ListAdapter(getActivity(), 0,streamBookData);
         }
+
+        swipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_container);
+        swipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        showLoading();
+                        downloadData();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 3000);
+            }
+        });
+            
         
         showLoading();
         downloadData();
