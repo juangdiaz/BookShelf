@@ -27,7 +27,9 @@ Mobile
 ![ScreenShot](http://imgur.com/hYSOBil.png)
 ![ScreenShot](http://imgur.com/TfQc7m7.png)
 
-<!--Tablet
-![ScreenShot](http://imgur.com/d5zuWM0.png)
--->
+Tablet
+![ScreenShot](http://imgur.com/Zs7ADGZ.png)
+![ScreenShot](http://imgur.com/nVTx699.png)
+![ScreenShot](http://imgur.com/qBDUAjN.png)
+
 
