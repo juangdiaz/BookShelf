@@ -24,6 +24,8 @@ Images
 =======
 Mobile
 ![ScreenShot](http://imgur.com/GE75qms.png)
+![ScreenShot](http://imgur.com/hYSOBil.png)
+![ScreenShot](http://imgur.com/TfQc7m7.png)
 
 <!--Tablet
 ![ScreenShot](http://imgur.com/d5zuWM0.png)
