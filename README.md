@@ -22,9 +22,9 @@ Libraries
 Images
 =======
 Mobile
-![ScreenShot](http://imgur.com/DlBPSKb.png)
+![ScreenShot](http://imgur.com/GE75qms.png)
 
-Tablet
+<!--Tablet
 ![ScreenShot](http://imgur.com/d5zuWM0.png)
-
+-->
 
