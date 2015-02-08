@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.juangdiaz.bookshelf"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -21,6 +21,7 @@ android {
 
 repositories {
     mavenCentral()
+    maven { url 'http://raw.github.com/wada811/Android-Material-Design-Colors/master/repository/' }
 }
 
 
@@ -36,5 +37,8 @@ dependencies {
     compile 'com.netflix.rxjava:rxjava-core:0.20.6'
     compile 'com.netflix.rxjava:rxjava-android:0.20.6'
     compile 'com.wrapp.floatlabelededittext:library:0.0.6'
+
+    compile 'at.wada811:android-material-design-colors:1.2.0'
+    compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 
 }

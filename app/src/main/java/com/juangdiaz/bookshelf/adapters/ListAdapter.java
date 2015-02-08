@@ -1,11 +1,16 @@
 package com.juangdiaz.bookshelf.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import com.juangdiaz.bookshelf.R;
 import com.juangdiaz.bookshelf.model.Book;
@@ -49,6 +54,7 @@ public class ListAdapter extends ArrayAdapter<Book> {
 
         holder.txtBookTitle.setText(book.getTitle());
         holder.txtBookAuthors.setText(book.getAuthor());
+        setCircleColor(position, holder);
 
         return row;
     }
@@ -58,11 +64,26 @@ public class ListAdapter extends ArrayAdapter<Book> {
 
         public TextView txtBookTitle;
         public TextView txtBookAuthors;
+        public ImageView imgBookTitle;
 
         public BooksViewHolder(View v) {
             txtBookTitle = (TextView) v.findViewById(R.id.txtBookTitle);
             txtBookAuthors = (TextView) v.findViewById(R.id.txtBookAuthors);
+            imgBookTitle = (ImageView) v.findViewById(R.id.image_view);
         }
+    }
+
+    private void setCircleColor(int position, BooksViewHolder holder)
+    {
+        ColorGenerator generator = ColorGenerator.MATERIAL;
+        String bookTitle = this.getItem(position).getTitle().toString();
+        int circleColor = generator.getColor(bookTitle);
+
+
+        TextDrawable drawable = TextDrawable.builder()
+                .buildRound(bookTitle.substring(0, 1).toString(), circleColor);
+        holder.imgBookTitle.setImageDrawable(drawable);
+
     }
 
 

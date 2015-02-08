@@ -15,6 +15,9 @@ Libraries
 *  [okhttp](http://square.github.io/okhttp/) An HTTP & SPDY client
 *  [guava](https://github.com/google/guava) Google Core Libraries for Java
 *  [Float Labeled EditText](https://github.com/wrapp/floatlabelededittext) Simple implementation of a Float Labeled EditText
+*  [Android-Material-Design-Colors](https://github.com/wada811/Android-Material-Design-Colors) Android-Material-Design-Colors provides color definitions of the Material Design.
+*  [TextDrawable](https://github.com/amulyakhare/TextDrawable) light-weight library provides images with letter/text like the Gmail app
+
 
 Images
 =======
